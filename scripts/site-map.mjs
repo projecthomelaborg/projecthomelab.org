@@ -5,7 +5,7 @@
 
 // Where the site's source lives on GitHub. "Edit this page" links, the
 // header GitHub icon and the contribute guide point here.
-export const GITHUB_REPO = 'https://github.com/projecthomelab/projecthomelab.org';
+export const GITHUB_REPO = 'https://github.com/projecthomelaborg/projecthomelab.org';
 
 export const sections = [
   {
