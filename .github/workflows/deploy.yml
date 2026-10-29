@@ -1,9 +1,9 @@
 # Builds the site on every pull request (so reviewers know it still works)
 # and deploys to the cPanel host over FTPS on every push to main.
 #
-# Repository secrets needed (Settings → Secrets and variables → Actions):
-#   FTP_SERVER     e.g. ftp.projecthomelab.org
-#   FTP_USERNAME   a cPanel FTP account whose home is public_html
+# Repository secrets (Settings → Secrets and variables → Actions → Secrets):
+#   FTP_SERVER     e.g. ftp.projecthomelab.org (hostname only)
+#   FTP_USERNAME   a cPanel FTP account whose directory is public_html
 #   FTP_PASSWORD
 name: Build and deploy
 
@@ -15,42 +15,47 @@ on:
 
 concurrency:
   group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
+
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site
-          path: dist
-          include-hidden-files: true
 
-  deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: dist
-      # Only files this action uploaded are ever updated or removed, so the
-      # old wiki's images/ folder and anything else in public_html is left alone.
-      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          security: loose
-          local-dir: ./dist/
-          server-dir: ./
+      # lftp keeps one connection open, reuses the TLS session for data
+      # transfers, limits itself to two parallel uploads and retries on
+      # dropped connections, which shared-hosting FTP servers handle far
+      # better than many short-lived connections.
+      #
+      # It only uploads; it never deletes anything on the server, so the
+      # old wiki's images/ folder and any subdomain folders are untouched.
+      - name: Deploy to cPanel over FTPS
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          lftp -c "
+            set cmd:fail-exit yes
+            set net:timeout 30
+            set net:max-retries 5
+            set net:reconnect-interval-base 5
+            set ftp:passive-mode yes
+            set ftp:ssl-force yes
+            set ftp:ssl-protect-data yes
+            set ftp:ssl-protect-list yes
+            set ssl:verify-certificate yes
+            open -u \"$FTP_USERNAME\" --env-password \"$FTP_SERVER\"
+            mirror --reverse --no-perms --parallel=2 --verbose=1 dist/ ./
+          "
