@@ -55,9 +55,18 @@ jobs:
           FTP_CERT_FINGERPRINT: ${{ vars.FTP_CERT_FINGERPRINT }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          # Keep only hex digits and colons, so a paste that includes the
+          # brackets, spaces or a line break still works.
+          FP=$(printf '%s' "$FTP_CERT_FINGERPRINT" | tr -cd '0-9A-Fa-f:' | tr a-f A-F)
           PIN=""
-          if [ -n "$FTP_CERT_FINGERPRINT" ]; then
-            PIN="set ssl:verify-certificate/$(echo "$FTP_CERT_FINGERPRINT" | tr -d ' ' | tr a-f A-F) no"
+          if [ -z "$FP" ]; then
+            echo "No FTP_CERT_FINGERPRINT repository variable found; using normal certificate checks."
+          elif ! printf '%s' "$FP" | grep -Eq '^([0-9A-F]{2}:){19,31}[0-9A-F]{2}$'; then
+            echo "::error::FTP_CERT_FINGERPRINT doesn't look like a fingerprint after cleanup: '$FP'. Paste the colon-separated value from the certificate error."
+            exit 1
+          else
+            echo "Trusting the FTP server certificate with fingerprint $FP"
+            PIN="set ssl:verify-certificate/$FP no"
           fi
           lftp -c "
             set cmd:fail-exit yes
