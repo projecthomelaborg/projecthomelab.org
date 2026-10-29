@@ -1,0 +1,24 @@
+{
+  "name": "projecthomelab",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/build-htaccess.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "import:wiki": "node scripts/import-mediawiki.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.7",
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
+    "astro": "^7.4.4",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "fast-xml-parser": "^5.11.2"
+  }
+}

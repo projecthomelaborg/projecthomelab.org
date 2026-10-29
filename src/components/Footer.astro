@@ -1,0 +1,45 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { GITHUB_REPO } from '../../scripts/site-map.mjs';
+---
+
+<Default><slot /></Default>
+
+<div class="site-footer">
+  <p>
+    Project Homelab is written by the people who use it. Content was carried over from the original wiki,
+    which continued the <a href="/about/">Open Homelab Project</a>.
+  </p>
+  <p class="links">
+    <a href="/contribute/">Contribute</a>
+    <a href="https://forums.projecthomelab.org">Forums</a>
+    <a href={`${GITHUB_REPO}/issues`}>Report a problem</a>
+    <a href="/about/#disclaimer">Disclaimer</a>
+  </p>
+  <p class="sponsor">Hosting sponsored by <a href="https://www.nodespace.com">NodeSpace</a>.</p>
+</div>
+
+<style>
+  .site-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+    line-height: 1.55;
+  }
+  .site-footer p {
+    margin: 0 0 0.6rem;
+  }
+  .site-footer a {
+    color: var(--sl-color-gray-2);
+  }
+  .site-footer a:hover {
+    color: var(--sl-color-accent);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+</style>

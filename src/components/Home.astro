@@ -1,0 +1,256 @@
+---
+import Rack from './Rack.astro';
+import { GITHUB_REPO } from '../../scripts/site-map.mjs';
+
+const path = [
+  { href: '/start-here/requirements/', title: 'Work out your requirements', text: 'Space, budget, noise, what you want to learn, and how often the lab will be on.' },
+  { href: '/start-here/homelab-categories/', title: 'Pick a style of lab', text: 'One host, a nested lab, a physical cluster, the cloud, or a mix.' },
+  { href: '/start-here/building-a-homelab/', title: 'Build it', text: 'Compute, storage, networking, power and the hypervisor that ties it together.' },
+  { href: '/start-here/managing-a-homelab/', title: 'Run it', text: 'Backups, patching, monitoring and automation, mostly with free tools.' },
+  { href: '/start-here/securing-a-homelab/', title: 'Lock it down', text: 'Reach your lab from anywhere without opening it to the internet.' },
+];
+---
+
+<div class="home not-content">
+  <section class="hero">
+    <div class="intro">
+      <img src="/logo-mark.svg" alt="" class="mark" width="78" height="76" />
+      <h1 class="ph-display">Build a homelab that fits your space, your budget and your free time.</h1>
+      <p class="lede">
+        Project Homelab is a community guide to choosing and running the hardware, hypervisors, storage and networking
+        that people use to learn IT at home. It’s written by homelabbers, for homelabbers, and it costs nothing to use.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="/start-here/requirements/">Start planning your lab</a>
+        <a class="btn" href="/contribute/">Write an article</a>
+      </div>
+    </div>
+    <div class="hero-rack">
+      <Rack />
+    </div>
+  </section>
+
+  <section class="path" aria-labelledby="path-h">
+    <h2 id="path-h" class="ph-display">New to homelabbing? Go in this order.</h2>
+    <ol>
+      {
+        path.map((p) => (
+          <li>
+            <a href={p.href}>{p.title}</a>
+            <p>{p.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="community" aria-labelledby="community-h">
+    <h2 id="community-h" class="ph-display">Written by the people who run the labs</h2>
+    <p>
+      Every page here started as someone’s notes from their own build. If you’ve racked a server, tamed a noisy fan or
+      finally got VLANs working, that’s an article. Each page has an <em>Edit page</em> link that opens it on GitHub,
+      and a maintainer reviews changes before they go live.
+    </p>
+    <p class="links">
+      <a href="/contribute/">How to contribute</a>
+      <a href="https://forums.projecthomelab.org">Ask on the forums</a>
+      <a href={GITHUB_REPO}>See the source</a>
+    </p>
+  </section>
+</div>
+
+<style>
+  .home {
+    max-width: 72rem;
+    margin-inline: auto;
+  }
+  /* The homepage has its own headline, so hide Starlight's page title bar. */
+  :global(.content-panel:has(#_top):not(:has(.home))) {
+    display: none;
+  }
+  :global(.content-panel:has(.home)) {
+    border-top: 0;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+    padding-block: clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+  }
+  .intro {
+    padding-top: clamp(0rem, 3vw, 2.5rem);
+  }
+  .mark {
+    width: 3.25rem;
+    height: auto;
+    margin-bottom: 1.25rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 1.3rem + 3vw, 3.4rem);
+    font-weight: 780;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    color: var(--sl-color-white);
+    margin: 0;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 1.4rem 0 0;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--sl-color-gray-2);
+    max-width: 52ch;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.7rem 1.15rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--sl-color-white);
+    border: 1.5px solid var(--sl-color-gray-4);
+  }
+  .btn:hover {
+    border-color: var(--sl-color-white);
+  }
+  .btn.primary {
+    background: var(--ph-blue-deep);
+    border-color: var(--ph-blue-deep);
+    color: #fff;
+  }
+  .btn.primary:hover {
+    background: #12506f;
+    border-color: #12506f;
+  }
+  :global([data-theme='dark']) .btn.primary {
+    background: var(--ph-blue);
+    border-color: var(--ph-blue);
+  }
+  :global([data-theme='dark']) .btn.primary:hover {
+    background: #2b8fc5;
+    border-color: #2b8fc5;
+  }
+
+  .path {
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+  h2 {
+    font-size: clamp(1.4rem, 1.1rem + 1vw, 1.8rem);
+    font-weight: 720;
+    margin: 0 0 1.75rem;
+    color: var(--sl-color-white);
+  }
+  .path ol {
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .path li {
+    counter-increment: step;
+    position: relative;
+    padding-top: 2.6rem;
+    margin: 0;
+  }
+  .path li::before {
+    content: counter(step);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.9rem;
+    height: 1.9rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 2px solid var(--ph-blue);
+    font-family: var(--ph-font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--sl-color-white);
+  }
+  .path li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0.95rem;
+    left: 2.4rem;
+    right: -1rem;
+    border-top: 2px solid var(--sl-color-gray-5);
+  }
+  .path a {
+    font-family: var(--ph-font-display);
+    font-variation-settings: 'wdth' 110;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+  .path a:hover {
+    color: var(--sl-color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .path p {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--sl-color-gray-3);
+  }
+
+  .community {
+    padding-block: clamp(2.5rem, 6vw, 4rem) 1rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    max-width: 44rem;
+  }
+  .community h2 {
+    margin-bottom: 1rem;
+  }
+  .community p {
+    color: var(--sl-color-gray-2);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .community .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .community .links a {
+    color: var(--sl-color-accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 62rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+    .path ol {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .path li {
+      padding-top: 0;
+      padding-left: 3rem;
+    }
+    .path li:not(:last-child)::after {
+      top: 2.3rem;
+      left: 0.95rem;
+      right: auto;
+      bottom: -1.1rem;
+      border-top: 0;
+      border-left: 2px solid var(--sl-color-gray-5);
+    }
+  }
+</style>

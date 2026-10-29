@@ -1,0 +1,102 @@
+---
+import { articlesIn, hrefFor } from './articles';
+import wanted from '../data/wanted.json';
+
+interface Props {
+  dir: string;
+}
+const { dir } = Astro.props;
+const articles = await articlesIn(dir);
+const missing = wanted.filter((w) => w.dir === dir);
+---
+
+<ul class="section-index not-content">
+  {
+    articles.map((a) => (
+      <li>
+        <a href={hrefFor(a)}>
+          <span class="t">{a.data.sidebar?.label ?? a.data.title}</span>
+          {a.data.stub && <span class="badge">Unfinished</span>}
+        </a>
+        {a.data.description && <p>{a.data.description}</p>}
+      </li>
+    ))
+  }
+</ul>
+
+{
+  missing.length > 0 && (
+    <aside class="wanted not-content">
+      <h2 class="ph-display">Not written yet</h2>
+      <p>
+        These topics belong in this section but nobody has written them up. If you run one of these in your lab,{' '}
+        <a href="/contribute/">add an article</a>.
+      </p>
+      <p class="list">{missing.map((w) => w.title).join(', ')}</p>
+    </aside>
+  )
+}
+
+<style>
+  .section-index {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+  .section-index li {
+    padding: 1rem 0 1.1rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+  .section-index a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--sl-color-white);
+  }
+  .section-index .t {
+    font-family: var(--ph-font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .section-index a:hover .t {
+    color: var(--sl-color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .section-index p {
+    margin: 0.3rem 0 0;
+    color: var(--sl-color-gray-2);
+    max-width: 62ch;
+    line-height: 1.55;
+  }
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--ph-led-warn) 70%, transparent);
+    color: var(--sl-color-gray-2);
+    white-space: nowrap;
+  }
+  .wanted {
+    margin-top: 2.5rem;
+    padding: 1.1rem 1.25rem;
+    border-left: 3px solid var(--ph-led-warn);
+    background: var(--sl-color-gray-6);
+  }
+  .wanted h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.4rem;
+    font-weight: 700;
+  }
+  .wanted p {
+    margin: 0;
+    color: var(--sl-color-gray-2);
+  }
+  .wanted .list {
+    margin-top: 0.5rem;
+    color: var(--sl-color-white);
+  }
+</style>

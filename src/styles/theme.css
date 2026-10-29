@@ -1,0 +1,153 @@
+/*
+ * Project Homelab theme for Starlight.
+ * Palette is taken from the logo: signal blue #207FB2 and ink #121314.
+ * Rack colors are brushed-steel greys; the only other hue is the amber
+ * status LED, which always means "unfinished article".
+ */
+
+:root {
+  --ph-blue: #207fb2;
+  --ph-blue-deep: #18638c;
+  --ph-blue-wash: #e3f0f7;
+  --ph-ink: #121314;
+  --ph-paper: #f6f8f9;
+  --ph-steel-900: #1c2329;
+  --ph-steel-800: #252e35;
+  --ph-steel-700: #313c44;
+  --ph-steel-500: #5b6a75;
+  --ph-steel-300: #a9b6bf;
+  --ph-led-ok: #45d483;
+  --ph-led-warn: #f2a93b;
+
+  --ph-font-display: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --sl-font: 'Atkinson Hyperlegible Next', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sl-font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --sl-content-width: 46rem;
+  --sl-text-h1: 2.25rem;
+  --sl-text-h2: 1.625rem;
+  --sl-text-h3: 1.3rem;
+  --sl-text-h4: 1.1rem;
+}
+
+/* Dark theme (Starlight default) */
+:root,
+::backdrop {
+  --sl-color-accent-low: #10334a;
+  --sl-color-accent: #3d9bd0;
+  --sl-color-accent-high: #b9dcf0;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e6ebee;
+  --sl-color-gray-2: #c3cdd3;
+  --sl-color-gray-3: #8e9ca6;
+  --sl-color-gray-4: #5b6a75;
+  --sl-color-gray-5: #333e46;
+  --sl-color-gray-6: #20282e;
+  --sl-color-black: #161c21;
+}
+
+/* Light theme */
+:root[data-theme='light'],
+[data-theme='light'] ::backdrop {
+  --sl-color-accent-low: #d4e8f4;
+  --sl-color-accent: #18638c;
+  --sl-color-accent-high: #0f4565;
+  --sl-color-white: #121314;
+  --sl-color-gray-1: #23292e;
+  --sl-color-gray-2: #39434a;
+  --sl-color-gray-3: #56636c;
+  --sl-color-gray-4: #85929b;
+  --sl-color-gray-5: #c7d0d6;
+  --sl-color-gray-6: #e7ecef;
+  --sl-color-gray-7: #f6f8f9;
+  --sl-color-black: #ffffff;
+}
+
+/* Headings: Archivo, slightly expanded, like equipment nameplates. */
+.sl-markdown-content :is(h1, h2, h3, h4),
+h1#_top,
+.site-title,
+.ph-display {
+  font-family: var(--ph-font-display);
+  font-variation-settings: 'wdth' 112;
+  letter-spacing: -0.01em;
+}
+h1#_top {
+  font-weight: 750;
+  line-height: 1.1;
+}
+.sl-markdown-content :is(h2, h3) {
+  font-weight: 700;
+}
+.sl-markdown-content :is(h4, h5) {
+  font-weight: 650;
+}
+.site-title {
+  font-weight: 750;
+  font-size: 1.15rem;
+  color: var(--sl-color-white);
+  gap: 0.6rem;
+}
+.site-title img {
+  height: 2.1rem;
+  width: auto;
+}
+
+/* Body copy */
+.sl-markdown-content {
+  line-height: 1.7;
+}
+.sl-markdown-content a {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.sl-markdown-content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Imported wiki content */
+.sl-markdown-content figure.wiki-figure {
+  margin: 1.5rem 0;
+  max-width: 100%;
+}
+.sl-markdown-content figure.wiki-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-color-gray-6);
+}
+.sl-markdown-content figure.wiki-figure figcaption {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+  margin-top: 0.4rem;
+}
+.sl-markdown-content td figure.wiki-figure {
+  margin: 0;
+}
+.sl-markdown-content table {
+  display: block;
+  overflow-x: auto;
+  font-size: var(--sl-text-sm);
+}
+.sl-markdown-content table caption {
+  caption-side: bottom;
+  text-align: left;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+  padding-top: 0.5rem;
+}
+.sl-markdown-content td :is(ul, ol) {
+  padding-inline-start: 1.1rem;
+  margin: 0;
+}
+.sl-markdown-content td p {
+  margin: 0;
+}
+
+/* Keyboard focus */
+:focus-visible {
+  outline: 2px solid var(--sl-color-accent);
+  outline-offset: 2px;
+}

@@ -1,0 +1,94 @@
+---
+title: Contribute an article
+description: How to fix a mistake, finish an unfinished article or write a new one for Project Homelab. All you need is a free GitHub account.
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import WantedList from '../../components/WantedList.astro';
+import { GITHUB_REPO } from '../../../scripts/site-map.mjs';
+
+Project Homelab only works if people who run labs write down what they learned. You don't need to be an expert or a good writer. If you've built it, broken it or fixed it, that's worth an article.
+
+Every page is a plain text Markdown file in a <a href={GITHUB_REPO}>public GitHub repository</a>. You suggest a change, a maintainer reviews it, and once it's merged the site rebuilds by itself, usually within a few minutes. That review step is what keeps spam off the site.
+
+## Fix or improve an existing page
+
+<Steps>
+
+1. Scroll to the bottom of the page and select **Edit page**. This opens the page's file on GitHub. Sign in or create a free account if you're asked.
+
+2. Make your changes in the editor. Select **Preview** to check how they look.
+
+3. Select **Commit changes…**, describe what you changed in a sentence, and choose **Propose changes**. GitHub copies the project to your account behind the scenes.
+
+4. On the next screen, select **Create pull request**. A maintainer will review it, may suggest tweaks, and merges it when it's ready.
+
+</Steps>
+
+## Write a new article
+
+Pick a topic from the list of [wanted articles](#wanted-articles), or anything homelab-related that isn't covered yet. Then create a new file in the right section folder under `src/content/docs/`. The links in the wanted list open GitHub with the file already named for you.
+
+Start the file with this header, then write the article below it:
+
+```md
+---
+title: Proxmox VE
+description: One or two sentences that say what the reader will get from this page. Shown in search results.
+---
+
+Proxmox VE is an open source hypervisor based on Debian…
+
+## Why use it in a homelab
+
+## Hardware it runs well on
+
+## Getting started
+```
+
+The file name becomes the page's address, so `hypervisors/proxmox-ve.md` is published at `/hypervisors/proxmox-ve/`. The article appears in that section's sidebar and on the homepage rack automatically.
+
+### Article layout
+
+There's no strict template, but most hardware and software articles work best with these sections, in this order:
+
+- **Introduction**: what it is and who it suits
+- **Pros and cons**
+- **Costs**: new, second-hand, and running costs such as power
+- **Use cases**: the kinds of lab it fits
+- **Known issues and solutions**
+- **Models or versions** worth knowing about
+
+Add images to `public/media/` and reference them as `![What the picture shows](/media/your-image.jpg)`. Describe the image in the brackets so screen-reader users get the same information.
+
+### Ground rules
+
+- **Write about your own experience.** Link to blog posts, vendor docs and videos when they help, but not to drive traffic to your own site.
+- **Vendors are welcome to write about their own products.** Don't edit articles about a competitor. Anything that reads like advertising will be removed.
+- **Only legitimate licensing.** No piracy, key generators or license workarounds. See the [disclaimer](/about/#disclaimer).
+- **Humour and memes are fine.** This is a community site, not an encyclopedia. Expect someone to tidy up your formatting or spelling; don't take it personally.
+
+## Wanted articles
+
+These were started on the old wiki but never written. Each one would fill a real gap. Select a topic to start a new file for it on GitHub.
+
+<WantedList />
+
+You'll also find articles marked **Unfinished** in each section. They have some content but need someone to finish them.
+
+## Work on the site locally
+
+If you'd rather use your own editor, or want to change the site's design:
+
+```sh
+git clone https://github.com/projecthomelab/projecthomelab.org.git
+cd projecthomelab.org
+npm install
+npm run dev
+```
+
+Then open `http://localhost:4321`. Pages reload as you save. Run `npm run build` before you open a pull request to make sure everything still builds.
+
+## Report a problem
+
+Spotted something wrong but don't have time to fix it? <a href={`${GITHUB_REPO}/issues/new`}>Open an issue on GitHub</a> or ask on the [forums](https://forums.projecthomelab.org).

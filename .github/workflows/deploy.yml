@@ -1,0 +1,55 @@
+# Builds the site on every pull request (so reviewers know it still works)
+# and deploys to the cPanel host over FTPS on every push to main.
+#
+# Repository secrets needed (Settings → Secrets and variables → Actions):
+#   FTP_SERVER     e.g. ftp.projecthomelab.org
+#   FTP_USERNAME   a cPanel FTP account whose home is public_html
+#   FTP_PASSWORD
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+          include-hidden-files: true
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+      # Only files this action uploaded are ever updated or removed, so the
+      # old wiki's images/ folder and anything else in public_html is left alone.
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./

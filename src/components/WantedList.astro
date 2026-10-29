@@ -1,0 +1,54 @@
+---
+import wanted from '../data/wanted.json';
+import { sections, GITHUB_REPO } from '../../scripts/site-map.mjs';
+
+const groups = sections
+  .map((s) => ({ ...s, items: wanted.filter((w) => w.dir === s.dir) }))
+  .filter((g) => g.items.length);
+const newFile = (dir: string, title: string) =>
+  `${GITHUB_REPO}/new/main/src/content/docs/${dir}?filename=${encodeURIComponent(
+    title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.md',
+  )}`;
+---
+
+<dl class="wanted-list">
+  {
+    groups.map((g) => (
+      <>
+        <dt>{g.label}</dt>
+        <dd>
+          <ul>
+            {g.items.map((w) => (
+              <li>
+                <a href={newFile(g.dir, w.title)}>{w.title}</a>
+              </li>
+            ))}
+          </ul>
+        </dd>
+      </>
+    ))
+  }
+</dl>
+
+<style>
+  .wanted-list dt {
+    font-family: var(--ph-font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    margin-top: 1.25rem;
+  }
+  .wanted-list dd {
+    margin: 0.25rem 0 0;
+  }
+  .wanted-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+  }
+  .wanted-list li {
+    margin: 0;
+  }
+</style>

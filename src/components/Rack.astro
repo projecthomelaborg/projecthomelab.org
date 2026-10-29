@@ -1,0 +1,259 @@
+---
+/**
+ * The homepage rack. Each section of the site is one chassis. Its height in
+ * rack units grows with the number of articles, and each drive bay on the
+ * faceplate is one article: green for complete, amber for unfinished.
+ */
+import { sectionsWithArticles, hrefFor } from './articles';
+
+const all = await sectionsWithArticles();
+const racked = all.filter((s) => s.articles.length > 0 && s.dir !== 'community');
+
+let u = 0;
+const units = racked.map((s) => {
+  const height = Math.min(3, Math.max(1, Math.ceil(s.articles.length / 7)));
+  const start = u + 1;
+  u += height;
+  return { ...s, height, start };
+});
+const totalU = u;
+---
+
+<figure class="rack not-content" aria-labelledby="rack-caption">
+  <div class="rack-frame" style={`--units:${totalU}`}>
+    <ol class="rail rail-left" aria-hidden="true">
+      {Array.from({ length: totalU }, (_, i) => <li>{i + 1}</li>)}
+    </ol>
+    <ul class="units">
+      {
+        units.map((s) => {
+          const done = s.articles.filter((a) => !a.data.stub).length;
+          return (
+            <li class="unit" style={`--h:${s.height}`}>
+              <a href={`/${s.dir}/`} class="faceplate">
+                <span class="ears" aria-hidden="true" />
+                <span class="plate">
+                  <span class="name">{s.label}</span>
+                  <span class="blurb">{s.blurb}</span>
+                </span>
+                <span class="bays" aria-label={`${s.articles.length} articles, ${s.articles.length - done} unfinished`}>
+                  {s.articles.map((a) => (
+                    <span class:list={['bay', { warn: a.data.stub }]} title={a.data.sidebar?.label ?? a.data.title} />
+                  ))}
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <ol class="rail rail-right" aria-hidden="true">
+      {Array.from({ length: totalU }, (_, i) => <li>{i + 1}</li>)}
+    </ol>
+  </div>
+  <figcaption id="rack-caption">
+    Every section of the guide, racked. Each drive bay is an article:{' '}
+    <span class="key ok" /> complete,{' '}<span class="key warn" /> unfinished and{' '}
+    <a href="/contribute/">looking for a writer</a>.
+  </figcaption>
+</figure>
+
+<style>
+  .rack {
+    --u: 3.25rem;
+    margin: 0;
+  }
+  .rack-frame {
+    display: grid;
+    grid-template-columns: 1.6rem 1fr 1.6rem;
+    background: linear-gradient(180deg, var(--ph-steel-700), var(--ph-steel-900) 30%);
+    border-radius: 6px;
+    padding: 0.6rem 0.35rem;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.09),
+      0 18px 40px -18px rgb(18 19 20 / 0.55);
+  }
+  .rail {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: repeat(var(--units), var(--u));
+    font-family: var(--ph-font-display);
+    font-variation-settings: 'wdth' 75;
+    font-size: 0.66rem;
+    color: var(--ph-steel-300);
+    text-align: center;
+    background-image: radial-gradient(circle, var(--ph-steel-900) 1.6px, transparent 2px);
+    background-size: 100% calc(var(--u) / 3);
+    background-position: center calc(var(--u) / 6);
+  }
+  .rail li {
+    margin: 0;
+    padding-top: 0.15rem;
+    line-height: 1;
+  }
+  .units {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: repeat(var(--units), var(--u));
+  }
+  .unit {
+    grid-row: span var(--h);
+    margin: 0;
+    padding: 2px 0;
+  }
+  .faceplate {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 0.5rem 1fr auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding-inline-end: 0.9rem;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #34404a, var(--ph-steel-800) 55%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.09),
+      inset 0 -1px 0 rgb(0 0 0 / 0.35);
+    color: #eef3f6;
+    text-decoration: none;
+  }
+  .faceplate:hover {
+    background: linear-gradient(180deg, #3a4752, #2b353d 55%);
+  }
+  .faceplate:hover .name {
+    color: #8fcdf0;
+  }
+  .faceplate:focus-visible {
+    outline: 2px solid #8fcdf0;
+    outline-offset: 1px;
+  }
+  .ears {
+    align-self: stretch;
+    border-radius: 3px 0 0 3px;
+    background: var(--ph-blue);
+  }
+  .plate {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .name {
+    font-family: var(--ph-font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    font-size: 1.02rem;
+    line-height: 1.2;
+  }
+  .blurb {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--ph-steel-300);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: var(--h);
+    -webkit-box-orient: vertical;
+  }
+  .unit:not([style*='--h:1']) .blurb {
+    -webkit-line-clamp: 3;
+  }
+  .unit[style*='--h:1'] .blurb {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  .bays {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--h), 0.9rem);
+    grid-auto-columns: 0.55rem;
+    gap: 0.28rem 0.22rem;
+    padding: 0.3rem;
+    border-radius: 2px;
+    background: var(--ph-steel-900);
+  }
+  .bay {
+    border-radius: 1px;
+    background: #3b4851;
+    position: relative;
+  }
+  .bay::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    background: var(--ph-led-ok);
+    box-shadow: 0 0 4px var(--ph-led-ok);
+  }
+  .bay.warn::after {
+    background: var(--ph-led-warn);
+    box-shadow: 0 0 4px var(--ph-led-warn);
+  }
+  figcaption {
+    margin-top: 0.85rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+    line-height: 1.5;
+  }
+  figcaption a {
+    color: var(--sl-color-accent);
+  }
+  .key {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    vertical-align: 0.05em;
+    margin-inline: 0.1rem;
+  }
+  .key.ok {
+    background: #2fa865;
+  }
+  .key.warn {
+    background: #d9901f;
+  }
+  @media (max-width: 30rem) {
+    .rack {
+      --u: 3.6rem;
+    }
+    .rack-frame {
+      grid-template-columns: 1.1rem 1fr 1.1rem;
+    }
+    .unit[style*='--h:1'] .blurb {
+      display: none;
+    }
+    .faceplate {
+      gap: 0.6rem;
+      padding-inline-end: 0.6rem;
+    }
+  }
+  /* Blinking only when the reader hasn't asked for less motion: one slow
+     pulse sweeps across the bays once on load, like drives spinning up. */
+  @media (prefers-reduced-motion: no-preference) {
+    .bay::after {
+      animation: spinup 1.4s ease-out both;
+    }
+    .units .unit:nth-child(1) .bay::after { animation-delay: 0.1s; }
+    .units .unit:nth-child(2) .bay::after { animation-delay: 0.25s; }
+    .units .unit:nth-child(3) .bay::after { animation-delay: 0.4s; }
+    .units .unit:nth-child(4) .bay::after { animation-delay: 0.55s; }
+    .units .unit:nth-child(5) .bay::after { animation-delay: 0.7s; }
+    .units .unit:nth-child(6) .bay::after { animation-delay: 0.85s; }
+    .units .unit:nth-child(7) .bay::after { animation-delay: 1s; }
+    .units .unit:nth-child(8) .bay::after { animation-delay: 1.15s; }
+    .units .unit:nth-child(9) .bay::after { animation-delay: 1.3s; }
+    .units .unit:nth-child(10) .bay::after { animation-delay: 1.45s; }
+    @keyframes spinup {
+      0% { opacity: 0; }
+      35% { opacity: 1; }
+      55% { opacity: 0.25; }
+      100% { opacity: 1; }
+    }
+  }
+</style>
