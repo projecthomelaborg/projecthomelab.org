@@ -5,6 +5,14 @@
 #   FTP_SERVER     e.g. ftp.projecthomelab.org (hostname only)
 #   FTP_USERNAME   a cPanel FTP account whose directory is public_html
 #   FTP_PASSWORD
+#
+# Repository variable (same page → Variables tab), only if the FTP server uses
+# a self-signed certificate, which is the cPanel default for FTP:
+#   FTP_CERT_FINGERPRINT   the fingerprint shown in brackets in the
+#                          "certificate is NOT trusted" error, e.g. CF:23:57:…
+#   This trusts that one certificate and nothing else, so the connection is
+#   still protected against impersonation. If the certificate is ever
+#   replaced, the deploy fails with the new fingerprint; update the variable.
 name: Build and deploy
 
 on:
@@ -44,8 +52,13 @@ jobs:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_CERT_FINGERPRINT: ${{ vars.FTP_CERT_FINGERPRINT }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          PIN=""
+          if [ -n "$FTP_CERT_FINGERPRINT" ]; then
+            PIN="set ssl:verify-certificate/$(echo "$FTP_CERT_FINGERPRINT" | tr -d ' ' | tr a-f A-F) no"
+          fi
           lftp -c "
             set cmd:fail-exit yes
             set net:timeout 30
@@ -56,6 +69,7 @@ jobs:
             set ftp:ssl-protect-data yes
             set ftp:ssl-protect-list yes
             set ssl:verify-certificate yes
+            $PIN
             open -u \"$FTP_USERNAME\" --env-password \"$FTP_SERVER\"
             mirror --reverse --no-perms --parallel=2 --verbose=1 dist/ ./
           "
