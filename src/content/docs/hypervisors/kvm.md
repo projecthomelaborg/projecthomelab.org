@@ -1,37 +1,88 @@
 ---
 title: "KVM"
-description: "Kernel-based Virtual Machine (KVM), is a hypervisor built into the Linux kernel. KVM can run a wide range of GNU/Linux, Windows and other operating…"
+description: "KVM is the hypervisor built into the Linux kernel. Learn how to check for support, install it with libvirt, and create your first VM."
 sidebar:
   label: "KVM"
   order: 4
-lastUpdated: 2020-07-31
+lastUpdated: 2026-10-30
 wikiTitle: "KVM"
-stub: true
 ---
 
-:::note[This article is unfinished]
-It was started on the old wiki but never completed. If you know this topic, [help finish it](/contribute/).
-:::
+Kernel-based Virtual Machine (KVM) is the hypervisor built into the Linux kernel. It underpins Proxmox VE, many public clouds, and other platforms. Running it directly on a Linux server takes more work than using a packaged platform, but it teaches you how everything fits together.
 
-## **Introduction**
+KVM follows the Unix approach of doing one job well. It runs VMs, and other tools handle the rest:
 
-  
-Kernel-based Virtual Machine (KVM), is a hypervisor built into the Linux kernel. KVM can run a wide range of GNU/Linux, Windows and other operating systems. For more information check out [Guest Support Status](http://www.linux-kvm.org/page/Guest_Support_Status). KVM is similar to Xen with couple of important differences. First, since KVM is part of the Linux kernel it uses the regular Linux scheduler and memory management, resulting in it being smaller and more featureful. On the other hand, KVM relies on a processor that supports x86 hardware virtual machine (HVM) CPU extensions, whereas Xen allows running modified operating systems on non-HVM x86 processors using paravirtualization. HVM is also referred to as hardware-assisted virtualization or native virtualization.  
-  
-== **Check for KVM Support** ==  
-***NOTE:*** Before proceeding you should ensure that virtualization is enabled in your BIOS. This process will vary slightly depending on your system. Refer to your system documentation or perform a web search for specific steps on enabling virtualization in your system BIOS.  
-  
-As mentioned previously, KVM requires the virtual machine (VM) host processor has hardware virtualization support. For Intel processors, this is VT-x, and AMD-V for AMD. Two methods can be used to verify this capability. The first is with the `lscpu` command.  
-  
-`$ lscpu`  
-  
-If your machine supports hardware virtualization it will be identified in the output. Since `lscpu` gathers information from sysfs and `/proc/cpuinfo`, another approach is to grep the `/proc/cpuinfo` file as follows  
-  
-`$egrep 'vmx|svm|0xc0f' /proc/cpuinfo`  
-  
-If nothing is displayed then your CPU does not support hardware virtualization.  
-  
-== **Host Setup** ==  
-  
-  
-== **Guest Setup** ==
+| Layer | Common tools |
+| --- | --- |
+| Device emulation | QEMU |
+| VM management | libvirt, `virsh` on the command line |
+| Graphical management | Cockpit (web), virt-manager (desktop) |
+| Networking | Linux bridges, Open vSwitch |
+| Storage | Local files (qcow2), LVM, ZFS, Ceph |
+
+## Check for support
+
+First, make sure virtualization is enabled in your firmware. Then check that the CPU supports it:
+
+```sh
+lscpu | grep -i virtualization
+```
+
+Intel CPUs show `VT-x`, and AMD CPUs show `AMD-V`.
+
+## Install it
+
+On Debian or Ubuntu:
+
+```sh
+sudo apt install qemu-system-x86 libvirt-daemon-system virtinst
+sudo adduser "$USER" libvirt
+```
+
+On Fedora or RHEL-family systems:
+
+```sh
+sudo dnf install qemu-kvm libvirt virt-install
+sudo systemctl enable --now libvirtd
+```
+
+Log out and back in, then run the validator. It reports anything that's missing:
+
+```sh
+virt-host-validate qemu
+```
+
+## Create a VM
+
+```sh
+virt-install \
+  --name test \
+  --memory 2048 \
+  --vcpus 2 \
+  --disk size=20 \
+  --cdrom ~/isos/debian.iso \
+  --osinfo detect=on,require=off
+```
+
+Then manage it with `virsh`:
+
+```sh
+virsh list --all
+virsh start test
+virsh shutdown test
+```
+
+For repeatable builds, use a distribution's cloud image with [cloud-init](https://cloud-init.io/) rather than installing from an ISO each time. See [Automation](/management/automation/).
+
+## Web management
+
+If you'd rather not use the command line, [Cockpit](https://cockpit-project.org/) with its machines plugin gives you a browser interface. If you run Linux on the desktop, [virt-manager](https://virt-manager.org/) can connect to remote hosts over SSH.
+
+## Networking and storage
+
+The default libvirt network uses NAT, so VMs can reach out but other machines can't reach them. To put VMs on your LAN, create a bridge with your distribution's network tooling, such as Netplan or NetworkManager. The old `brctl` command is deprecated in favor of `ip link`.
+
+## Further reading
+
+- [libvirt documentation](https://libvirt.org/docs.html)
+- [Arch Wiki on KVM](https://wiki.archlinux.org/title/KVM) and [QEMU](https://wiki.archlinux.org/title/QEMU), which are useful on any distribution

@@ -1,19 +1,19 @@
 ---
-title: "Keep It Simple Stupid"
-description: "Keep It Simple Stupid should be a guiding principle for every homelab build!"
+title: "Keep It Simple"
+description: "Time-saving habits that let you spend your time learning in the lab instead of maintaining it."
 sidebar:
-  label: "Keep It Simple Stupid"
-  order: 6
-lastUpdated: 2020-07-31
+  label: "Keep It Simple"
+  order: 7
+lastUpdated: 2026-10-30
 wikiTitle: "Keep It Simple Stupid"
 ---
 
-## Introduction
+Keep It Simple, Stupid (KISS) should be a guiding principle for every homelab. You want to spend your time learning in your lab, not nursing it along.
 
-Keep It Simple Stupid should be a guiding principle for every homelab build!
-
-You really want to spend your time learning in your lab, and not managing the lab. These time saving tips will help you achieve that!
-
-## KISS Tips
-
-- Don't configure your VMs to require manual installation of Windows or Linux OS updates! In this day and age, the chances of a patch causing a major lab outage is minimal, and even if it does, who cares? Just rebuild! Either use WSUS to roll out patches, or set automatic updates, but remember you are probably running on limited compute, so don't set all your VMs to update at the same time, on the same day of the week!
+- **Automate updates on disposable machines.** If a patch breaks something, rebuild it. Stagger the schedule so everything isn't busy at the same time on limited hardware. See [Patching](/management/patching/).
+- **Separate what you depend on from what you play with.** Keep your DNS, your backups and your family's photos away from today's experiment.
+- **Make rebuilding cheap.** Use templates, cloud-init, Compose files and [Ansible](/management/automation/), so a rebuild takes minutes instead of a weekend.
+- **Start small and add when it hurts.** You probably don't need a Kubernetes cluster to run three containers, unless learning Kubernetes is the point.
+- **Prefer boring defaults.** Use the supported install method, the default storage layout, and the documented upgrade path.
+- **Turn things off.** If you're not using it, shut it down. You'll save money and have less to patch.
+- **Write down what you did**, briefly, while you still remember. Future you will be grateful.

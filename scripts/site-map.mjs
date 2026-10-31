@@ -1,7 +1,8 @@
 // Single source of truth for where each wiki article lives on the new site.
 // Used by the importer (scripts/import-mediawiki.mjs) and the redirect
-// generator (scripts/build-htaccess.mjs). To add a section or move an
-// article, edit this file and re-run `npm run import:wiki`.
+// generator (scripts/build-htaccess.mjs). Since the 2026 refresh these describe
+// the old wiki's layout plus new sections; articles are edited directly, so
+// don't re-run `npm run import:wiki`. See src/data/moved.json for moved pages.
 
 // Where the site's source lives on GitHub. "Edit this page" links, the
 // header GitHub icon and the contribute guide point here.
@@ -27,7 +28,7 @@ export const sections = [
   {
     dir: 'hardware',
     label: 'Hardware',
-    blurb: 'Servers, mini PCs, whiteboxes, cases and the parts that go in them.',
+    blurb: 'Mini PCs, used servers, custom builds and the parts that go in them.',
     pages: [
       ['Intel NUC', 'intel-nuc'],
       ['Intel NUC6I7KYK', 'intel-nuc6i7kyk'],
@@ -71,7 +72,7 @@ export const sections = [
   {
     dir: 'storage',
     label: 'Storage',
-    blurb: 'Local disks, NAS, SAN, hyper-converged and storage software.',
+    blurb: 'Local disks, ZFS, NAS, Ceph, hyper-converged and storage software.',
     pages: [
       ['Storage', 'storage-options', 'Storage options'],
       ['Homelab Storage Software', 'storage-software'],
@@ -86,7 +87,7 @@ export const sections = [
   {
     dir: 'networking',
     label: 'Networking',
-    blurb: 'Addressing, 10Gb and InfiniBand, Wi-Fi and network gear.',
+    blurb: 'Addressing, VLANs, 2.5–100Gb, Wi-Fi and network gear.',
     pages: [
       ['IP Addressing', 'ip-addressing'],
       ['10Gbps Homelab Networking', '10gbps-networking'],
@@ -103,8 +104,8 @@ export const sections = [
   },
   {
     dir: 'hypervisors',
-    label: 'Hypervisors',
-    blurb: 'Choosing and running vSphere, Hyper-V, KVM, Proxmox and nested labs.',
+    label: 'Hypervisors and containers',
+    blurb: 'Proxmox, XCP-ng, KVM, Hyper-V, VMware, Kubernetes and nested labs.',
     pages: [
       ['Homelab Hypervisor Choices', 'choosing-a-hypervisor', 'Choosing a hypervisor'],
       ['VMware vSphere', 'vmware-vsphere'],
@@ -119,7 +120,7 @@ export const sections = [
   {
     dir: 'management',
     label: 'Management',
-    blurb: 'Running the lab day to day: access, automation, backups and patching.',
+    blurb: 'Running the lab day to day: backups, monitoring, automation and patching.',
     pages: [
       ['Managing your VMware vSphere Homelab without vCenter', 'vsphere-without-vcenter', 'vSphere without vCenter'],
       ['Running Your vSphere Management Cluster on Hyper-V', 'vsphere-management-cluster-on-hyper-v', 'vSphere management cluster on Hyper-V'],
@@ -142,7 +143,7 @@ export const sections = [
   {
     dir: 'security',
     label: 'Security',
-    blurb: 'Remote access done safely, firewalls, antivirus and certificates.',
+    blurb: 'Remote access done safely, firewalls, detection and certificates.',
     pages: [
       ['Remote Access', 'remote-access'],
       ['RDP Web Access', 'rdp-web-access', 'RD Web Access'],
@@ -156,7 +157,7 @@ export const sections = [
   {
     dir: 'licensing',
     label: 'Licensing',
-    blurb: 'Getting legitimate lab licenses for Microsoft and VMware software.',
+    blurb: 'Getting legitimate lab licenses for VMware and Microsoft software.',
     pages: [
       ['Microsoft Licensing', 'microsoft'],
       ['VMware Licensing', 'vmware'],
@@ -172,6 +173,12 @@ export const sections = [
       ['Amazon Web Services', 'aws'],
       ['Microsoft Azure', 'azure'],
     ],
+  },
+  {
+    dir: 'archive',
+    label: 'Archive',
+    blurb: 'Older build logs and notes on retired products, kept for reference.',
+    pages: [],
   },
   {
     dir: 'community',
@@ -212,7 +219,7 @@ export const extraRedirects = {
   Antivirus: 'Homelab Antivirus',
   'Cloud vInception': 'Virtual Machine vInception',
   'Beginners Guide': '/contribute/',
-  Whitebox: '/start-here/building-a-homelab/#whitebox-servers',
+  Whitebox: '/start-here/building-a-homelab/#custom-builds',
   'Open Homelab Bug Tracker': 'https://issues.projecthomelab.org',
 };
 

@@ -11,7 +11,7 @@ Project Homelab was forked from the defunct Open Homelab Project in July 2020. O
 
 The original Open Homelab Project started as a [roundtable discussion](http://tekhead.it/blog/2016/04/preview-open-homelab-project-at-lonvmug-14th-april-2016/) at the London VMUG in April 2016. The people who got it off the ground are listed on the [founders page](/community/founders/).
 
-From 2020 to 2026 the site ran as a MediaWiki wiki. In 2026 it moved to its current form, where articles live as plain Markdown files on GitHub, so anyone can suggest an improvement and nothing goes live without review.
+From 2020 to 2026 the site ran as a MediaWiki wiki. In 2026 it moved to its current form, where articles live as plain Markdown files on GitHub, so anyone can suggest an improvement and nothing goes live without review. That year the guide was also rewritten to reflect how people build labs now, and older material moved to the [archive](/archive/).
 
 ## Why it exists
 

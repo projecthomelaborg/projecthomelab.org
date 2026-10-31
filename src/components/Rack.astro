@@ -7,7 +7,7 @@
 import { sectionsWithArticles, hrefFor } from './articles';
 
 const all = await sectionsWithArticles();
-const racked = all.filter((s) => s.articles.length > 0 && s.dir !== 'community');
+const racked = all.filter((s) => s.articles.length > 0 && s.dir !== 'community' && s.dir !== 'archive');
 
 let u = 0;
 const units = racked.map((s) => {

@@ -1,40 +1,41 @@
 ---
-title: "Antivirus and UTMs"
-description: "Although the title of this article suggests you need some antivirus for your homelab, in reality you need something more robust if you plan to allow your…"
+title: "Endpoint protection and intrusion detection"
+description: "How to detect threats in a homelab using network monitoring, host-based tools and antivirus, and which tools are worth your time."
 sidebar:
-  label: "Antivirus and UTMs"
+  label: "Endpoint protection and detection"
   order: 5
-lastUpdated: 2025-10-31
+lastUpdated: 2026-10-30
 wikiTitle: "Homelab Antivirus"
-stub: true
 ---
 
-:::note[This article is unfinished]
-It was started on the old wiki but never completed. If you know this topic, [help finish it](/contribute/).
-:::
+Antivirus alone won't protect a homelab. Exposure, segmentation and patching come first. See [Securing a Homelab](/start-here/securing-a-homelab/). Once you have those covered, detection tools are useful for security and are great to learn if you're after a security career.
 
-## Introduction
+## Network detection
 
-Although the title of this article suggests you need some antivirus for your homelab, in reality you need something more robust if you plan to allow your homelab to do anything on the internet other than connect to your favourite vendor sites. You need a threat management / threat protection solution.
+| Tool | What it does | Notes |
+| --- | --- | --- |
+| [Suricata](https://suricata.io/) | Inspects traffic for known threats | Built into or available for OPNsense and pfSense |
+| [CrowdSec](https://www.crowdsec.net/) | Blocks abusive IP addresses using shared threat data | Good for public-facing services |
+| [Zeek](https://zeek.org/) | Produces detailed network logs for analysis | Better for learning than for simple alerting |
+| [Security Onion](https://securityonionsolutions.com/) | A complete platform that bundles network and host tools | Needs a lot of RAM |
 
-## Solutions
+To inspect traffic beyond your firewall, you may need a switch that supports port mirroring.
 
-The following are a number of free commercial-grade threat management solutions from Enterprise vendors which have been tested by the community, listed by category:
+## Host detection
 
-| Category  | Vendor                        | Product & Link                                                                                                           | Notes                                                                                                                                                                    |
-|-----------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| UTM       | [Sophos](/security/)   | [UTM Home Edition](https://www.sophos.com/en-us/products/free-tools/sophos-utm-home-edition.aspx#)                       | Free for up to 50 IPs on your network. Can run as a VM appliance or native physical.                                                                                     |
-| Client AV | [Sophos](/security/)   | [Sophos Home Edition (Win/OSX)](https://www.sophos.com/en-us/lp/sophos-home.aspx)                                        | Free for PCs and Macs                                                                                                                                                    |
-| Client AV | [Sophos](/security/)   | [Sophos for Linux](https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx)                     | Free for Linux                                                                                                                                                           |
-| Firewall  | [Sophos](/security/)   | [Sophos XG Firewall Home Edition](https://www.sophos.com/en-us/products/free-tools/sophos-xg-firewall-home-edition.aspx) | Includes anti-malware, web security and URL filtering, application control, IPS, traffic shaping, VPN, reporting and monitoring!                                         |
-| Firewall  | pfsense | [pfsense Firewall](https://www.pfsense.org/)                                                                             | Lightweight, free and open source firewall based on FreeBSD with a host of plugins and great community support. Runs well as a virtual appliance, or on low end hardware |
+| Tool | What it does | Notes |
+| --- | --- | --- |
+| [Wazuh](https://wazuh.com/) | Open source SIEM and endpoint agent | The popular choice for a home SOC lab. Its central server needs several GB of RAM |
+| [Fail2ban](https://github.com/fail2ban/fail2ban) | Blocks repeated failed logins | Simple. Less necessary if you've kept services private |
+| [Lynis](https://cisofy.com/lynis/) | Audits Linux hardening | Free, and gives you a list of things to fix |
 
-Free Security Software and Appliances
+## Antivirus
 
-## Commercial Solutions (Trial)
+- **Windows:** Microsoft Defender is built in and is a sensible default. Windows Server includes it as well.
+- **Linux:** [ClamAV](https://www.clamav.net/) is useful for scanning files, such as on a mail server or a file share. Most Linux servers don't need antivirus, so spend your effort on updates and exposure.
+- **Other products:** many vendors have changed or ended their free home products, so check the current terms. Also bear in mind that security agents use up resources, which can become significant on small hosts.
+- **Enterprise products:** if you need one for work, ask your vendor about a trial or a partner license.
 
-| Category | Vendor                      | Product & Link                                                       | Notes                                                |
-|----------|-----------------------------|----------------------------------------------------------------------|------------------------------------------------------|
-| Various  | McAfee | [McAfee ePolicy Orchestrator](https://www.trellix.com/products/epo/) | Commercial enterprise software, available as a trial |
+## Scanning for vulnerabilities
 
-Commercial Solutions offered as a trial basis
+Try scanning your own lab. [Greenbone Community Edition](https://www.greenbone.net/en/community-edition/) (OpenVAS) and [Nmap](https://nmap.org/) show you what's exposed and out of date. For container images, use [Trivy](https://trivy.dev/) or a similar tool. Only scan systems that you own or have permission to test.

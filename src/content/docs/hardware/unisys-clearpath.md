@@ -1,21 +1,25 @@
 ---
 title: "Unisys ClearPath"
-description: "ClearPath MCP Express is free to use for non-production hobbyist use, only requiring you re-license the OS every year on July 31st."
+description: "Unisys has offered free hobbyist editions of its ClearPath mainframe operating systems. Check their current availability and terms before you plan around them."
 sidebar:
   label: "Unisys ClearPath"
-  order: 17
-lastUpdated: 2020-07-31
+  order: 6
+lastUpdated: 2026-10-30
 wikiTitle: "Unisys"
 ---
 
-**Unisys** is another vendor of mainframe solutions. Unlike IBM, they do offer "home lab" use of their mainframe OSes to encourage experimentation and personal development at no cost, and fairly good documentation.
+:::note[Check availability]
+We haven't recently confirmed these offers, so check with Unisys for their current status and terms. If you know more, [update this page](/contribute/).
+:::
 
-#### ClearPath MCP
+**Unisys** is another mainframe vendor. Unlike IBM, it has offered free hobbyist editions of its operating systems, with reasonable documentation, to encourage experimentation.
 
-[ClearPath MCP Express](http://www.unisys.com/offerings/high-end-servers/clearpath-forward-systems/clearpath-mcp-software/clearpath-mcp-express) is free to use for non-production hobbyist use, only requiring you re-license the OS every year on July 31st.
+## ClearPath MCP
 
-Unisys offers not only [fairly good documentation](https://public.support.unisys.com/search2/DocumentationSearch.aspx?ID=885&pla=ps&nav=ps) but [video tutorials](https://www.youtube.com/playlist?list=PLzXIyqnmO3G8EfjDC6a_vhrkDYFqiPBID) on setting up the environment.
+ClearPath MCP Express has been free for non-production hobbyist use, with the license needing to be renewed each year. Unisys has also published [video tutorials](https://www.youtube.com/playlist?list=PLzXIyqnmO3G8EfjDC6a_vhrkDYFqiPBID) on setting it up.
 
-#### ClearPath OS2200
+## ClearPath OS 2200
 
-Like MCP, [OS2200 Express](http://www.unisys.com/offerings/high-end-servers/clearpath-forward-systems/clearpath-os-2200-software/clearpath-os-2200-express) is a free hobbyist version of the ClearPath Forward OS2200 platform.
+OS 2200 Express is a similar hobbyist edition of the ClearPath OS 2200 platform.
+
+Start at the [Unisys website](https://www.unisys.com/) for details of both.

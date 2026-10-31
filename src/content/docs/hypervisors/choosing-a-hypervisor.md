@@ -1,59 +1,77 @@
 ---
-title: "Microsoft"
-description: "Microsoft Hyper-V Server is a free product that delivers enterprise-class virtualization for your datacenter and hybrid cloud. Microsoft Hyper-V Server…"
+title: "Choosing a hypervisor"
+description: "Compare Proxmox VE, XCP-ng, KVM, Hyper-V, VMware and others by cost, ease of use and what they're good for in a homelab."
 sidebar:
   label: "Choosing a hypervisor"
   order: 1
-lastUpdated: 2021-02-09
+lastUpdated: 2026-10-30
 wikiTitle: "Homelab Hypervisor Choices"
 ---
 
-## Microsoft Windows Server 2019 Hyper-V
+If you have no strong reason to pick something else, **start with [Proxmox VE](/hypervisors/proxmox-ve/)**. It's free, runs on nearly anything, and has a large community. If your job uses a particular platform, the better choice may be whatever helps your career.
 
-Microsoft Hyper-V Server is a free product that delivers enterprise-class virtualization for your datacenter and hybrid cloud. Microsoft Hyper-V Server 2019 provides new and enhanced features that can help you deliver the scale and performance needs of your mission-critical workloads.
+| Platform | Cost for a lab | Clustering | Containers | Hardware support | Choose it if |
+| --- | --- | --- | --- | --- | --- |
+| [Proxmox VE](/hypervisors/proxmox-ve/) | Free, with optional paid support | Yes | LXC built in | Broad (Linux) | You want the sensible default |
+| [XCP-ng](/hypervisors/xcp-ng/) | Free, with optional paid support | Yes | Not built in | Broad | You like the Xen and vCenter style of working |
+| [KVM and libvirt](/hypervisors/kvm/) | Free | Do it yourself | Separate tools | Broad (Linux) | You want to learn the layers underneath |
+| [Hyper-V](/hypervisors/hyper-v/) | Windows license or evaluation | Yes | Windows-focused | Broad (Windows) | You work in a Microsoft shop |
+| [VMware vSphere](/hypervisors/vmware-vsphere/) | Free only in a limited form; see [licensing](/licensing/vmware/) | Requires a paid or program license | Via VCF | Narrow | You need VMware skills for work |
+| TrueNAS or Unraid | Free or paid | Limited | Yes | Broad | Storage comes first, VMs second |
+| Nutanix CE | Free | Yes | Via add-ons | Fussy, and needs lots of RAM | You want to learn Nutanix |
 
-The Windows hypervisor technology in Microsoft Hyper-V Server 2019 is the same as what's in the Microsoft Hyper-V role on Windows Server 2019. It is a stand-alone product that contains only the Windows hypervisor, a Windows Server driver model, and virtualization components. It provides a simple and reliable virtualization solution to help you improve your server utilization and reduce costs.
+If you only plan to run containers, you may not need a hypervisor at all. See [Containers and Kubernetes](/hypervisors/containers-and-kubernetes/).
 
-### Licensing
+## Type 1 hypervisors
 
-Microsoft Licensing is a dark art that only a select few will take the time to master and to remain compliant within a corporate world it most companies rely on License specialists. Whilst it is, of course, important to be fully licensed for all of the software you plan to run within the home lab, if you have a TechNet (no longer available) or MSDN subscription then you are more than likely covered (assuming you only deploy the applications and software you are licensed for). See [Microsoft Licensing](/licensing/microsoft/).
+### Proxmox VE
 
-From a Hyper-V perspective, Microsoft Windows Server 2012 (inc R2) Standard Edition license means you can run upto 2 VMs per license. Any further VMs will require additional Standard License (licensing either the host for virtual instances). By far the most common scenario for virtualisation in real world environment is to purchase Data Center Edition licensing as this allows you to run unlimited instances of a virtual machine on your host servers.
+A Debian-based platform that combines KVM virtual machines and LXC containers with a web interface, clustering, ZFS and Ceph. See [Proxmox VE](/hypervisors/proxmox-ve/).
 
-That said, I believe the Microsoft Server license mode is very much trust based. Microsoft trust you will do the right thing because being caught under licensed is a very expensive mistake to make!
+### XCP-ng
 
-## Citrix
+An open source Xen platform, forked from XenServer and managed with Xen Orchestra. See [XCP-ng](/hypervisors/xcp-ng/).
 
-## Citrix Hypervisor (formerly XenServer)
+### KVM with libvirt
 
-## Microsoft Hyper-V Server
+KVM is built into the Linux kernel and underpins Proxmox, many public clouds, and other platforms. Running it directly teaches you a lot. See [KVM](/hypervisors/kvm/).
 
-## KVM
+### Microsoft Hyper-V
 
-KVM is a versatile beast and ships with virtually every Linux distribution, making it incredibly widely available. KVM supports live migration and together with other Linux tools can provide the same base features as both VMware and HyperV. The key point to realise about KVM is that KVM just runs VMs, it's not a monolithic product like ESXi and instead of trying to do everything the Unix philosophy is to [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy#Do_One_Thing_and_Do_It_Well). So, KVM runs VMs but for networking you have a pick of tools from basic linux bridging with brctl for simple sharing of the host network to OpenVswitch with VXLAN for complex NFV use cases. Similarly with storage, you can either use the same disk you installed Linux on to store your VMs, or setup a clustered storage system akin to VSAN using popular alternatives like Ceph or GlusterFS.
+Part of Windows Server and the Pro and Enterprise editions of Windows. The free standalone Hyper-V Server ended with the 2019 version. See [Hyper-V](/hypervisors/hyper-v/).
 
-## Proxmox
+### VMware vSphere
 
-Proxmox acts as a layer above KVM to include network, storage and host cluster services under one roof. Open source and free with a paid-for support model.
+Still widespread in enterprises, but much harder to justify at home since Broadcom's licensing changes. See [VMware vSphere](/hypervisors/vmware-vsphere/) and [VMware licensing](/licensing/vmware/).
 
-## oVirt
+### Other options
 
-The open-source branch of Red Hat's RHV product oVirt is similar to Proxmox in functionality.
+- **XenServer:** the commercial Xen platform that XCP-ng descended from. It has [a free tier for small installs](https://www.theregister.com/2024/03/27/xenserver_8_returns/), though check the current limits.
+- **Nutanix Community Edition:** a free version of Nutanix's platform and its AHV hypervisor. It has steep [hardware requirements](/storage/hyper-converged-infrastructure/#solutions).
+- **OpenStack:** a private cloud platform. It's heavy for a home lab, but MicroStack and Kolla make it easier to try if you need the skills.
+- **Harvester:** SUSE's open source platform that runs VMs on Kubernetes. It needs a lot of RAM.
+- **Incus:** a community-led manager for containers and VMs, forked from LXD. It's lightweight and well suited to Linux users.
+- **oVirt:** the upstream of Red Hat Virtualization, which Red Hat has stepped back from. We wouldn't start a new lab on it.
+- **Oracle VM:** Oracle's Xen-based product has been superseded, and we wouldn't start a new lab on it either.
 
-## KVM w/ libvirt
+## Desktop hypervisors
 
-If you are willing to get your hands dirty then you should read a primer on virsh ([Ubuntu](https://help.ubuntu.com/community/KVM/Virsh) or [Red Hat](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Administration_Guide/chap-Virtualization_Administration_Guide-Managing_guests_with_virsh.html)), a simple shell to start/stop and configure VMs on the command line. Configurations are stored and retrieved as XML and support includes starting/stopping/migrating VMs managing virtual disks across a wide variety of backends and managing virtual networks.
+These run on your existing computer. They're free, quick to set up, and perfect for a study lab. They don't offer clustering of their own, and the lab stops when your computer does.
 
-If you already run Linux on the desktop then the excellent [virt-manager](https://virt-manager.org/) tool is available to you.
+| Host OS | Options |
+| --- | --- |
+| Windows | Hyper-V (Pro and Enterprise), VMware Workstation Pro, VirtualBox, WSL 2 for Linux environments |
+| macOS | VMware Fusion, UTM, Parallels (paid), and lightweight tools such as OrbStack, Lima and Colima |
+| Linux | virt-manager with KVM, GNOME Boxes, VMware Workstation Pro, VirtualBox |
 
-## Oracle
+VMware made [Workstation Pro and Fusion Pro free](https://www.computerworld.com/article/3604503/vmware-makes-workstation-and-fusion-free-for-everyone.html) for all uses, though you need a Broadcom account to download them.
 
-## Oracle VM
+On Apple Silicon Macs, VMs generally need to be Arm builds. x86 guests run only through slow emulation, which limits what you can nest on them. Hypervisors like ESXi and Proxmox are built primarily for x86.
 
-## Oracle Virtualbox
+## What to compare
 
-## VMware
-
-## VMware vSphere ESXi
-
-Welcome to the joy that comes from hand-crafting your own ESXi ISOs to include that motherboard SATA controller that VMware refused to put on their HCL, loading your new ESXi with tons of VMs, running it for ages and then upgrading it forgetting about the driver and losing access to everything. Fun times.
+- **Hardware support:** Linux-based platforms run on nearly anything. ESXi's driver list is much narrower and often excludes consumer NICs. Check before you buy.
+- **Backup support:** check that your preferred [backup tool](/management/backups/) works with it. Free ESXi, for example, doesn't offer backup APIs.
+- **Community size:** in a homelab, forums and blogs are your support contract.
+- **Licensing stability:** vendor terms can change suddenly, so have an exit plan and keep your VMs portable.
+- **Migration tools:** Proxmox and others can import VMware VMs directly, which makes moving much easier.

@@ -1,87 +1,37 @@
 ---
-title: "VMware VSAN"
-description: "This is the article template page. When you create a brand new article, you could simply copy all of the content / code from here, then replace it with…"
+title: "VMware vSAN"
+description: "vSAN is VMware's hyper-converged storage. Learn what's involved in running it in a lab today, including licensing, architecture and hardware."
 sidebar:
-  label: "VMware VSAN"
+  label: "VMware vSAN"
   order: 4
-lastUpdated: 2020-07-31
+lastUpdated: 2026-10-30
 wikiTitle: "VMware VSAN"
 stub: true
 ---
 
-:::note[This article is unfinished]
-It was started on the old wiki but never completed. If you know this topic, [help finish it](/contribute/).
+:::note[This article needs more first-hand detail]
+If you run vSAN in your lab, [help improve this page](/contribute/) with your hardware and results.
 :::
 
-## Introduction
+vSAN is VMware's [hyper-converged](/storage/hyper-converged-infrastructure/) storage, built into the ESX hypervisor. It pools drives from your hosts into one shared datastore.
 
-This is the article template page. When you create a brand new article, you could simply copy all of the content / code from here, then replace it with your own content! :)
+## Is it worth running at home?
 
-Bear in mind that some or all of these sections may not be relevant to your article, so please delete or add sections as appropriate.
+It makes sense mainly when you're learning it for work. It needs vCenter and a suitable license, so there's no free route. See [VMware licensing](/licensing/vmware/). For general-purpose homelab HCI, [Ceph on Proxmox](/storage/hyper-converged-infrastructure/#solutions) is free and easier to get running on consumer hardware.
 
-## Pros and Cons
+## Architecture
 
-XYZ
+- **Original Storage Architecture (OSA):** disk groups made up of one cache device and capacity devices. It's more forgiving on hardware.
+- **Express Storage Architecture (ESA):** a newer, all-NVMe design with no separate cache tier. It has stricter hardware requirements, so check the requirements carefully if you aren't using certified drives.
 
-## Licensing
+## Options for a lab
 
-ABC
+- **Nested:** the easiest and cheapest way to learn the features. Community [nested ESXi templates](https://williamlam.com/nested-virtualization) make this quick, and fake SSDs are fine for learning the concepts.
+- **Physical:** at least three hosts is the standard design. A two-node cluster with a witness is also possible.
+- **Network:** use a dedicated VLAN at minimum. 10Gb is strongly recommended, and ESA expects more.
 
-## Use Cases
+## Hardware warnings
 
-The use cases for this type of technology are blah blah
+Uncertified drives and controllers can run vSAN in a lab, but community members have lost data doing so. Keep backups, and don't put your only copy of anything on an experimental cluster. Consumer SSDs are particularly risky without power-loss protection.
 
-## Feature History
-
-- 1st release
-- \[...\]
-- VSAN 6.2
-
-## VSAN Configuration
-
-- Hybrid
-- All Flash
-
-## Implementation type
-
-- VSAN cluster
-- Stretched Cluster
-- ROBO
-- Single node (unsupported)
-- Nested ?
-
-## Sizing Guide
-
-## Monitoring
-
-- VSAN Observer
-- VSAN 6.2 Performance Service
-- vRealize Log Insight
-- Sexigraf
-
-## Known Issues and Solutions
-
-This is specifically to detail any issues with the technology being discussed, and how to resolve them. See the [Intel NUC](/hardware/intel-nuc/) page for an example.
-
-- Disable VSAN Device Monitoring
-  - esxcli system settings advanced set -o /LSOM/VSANDeviceMonitoring -i 0
-
-<!-- -->
-
-- Disable VSAN Slow Device Unmounting
-  - esxcli system settings advanced set -o /LSOM/lsomSlowDeviceUnmount -i 0
-
-## VSAN Homelab HCL
-
-**As this is a storage platform where you might end up migrating your homelab production data, keep in mind that by using components not certified by VMware, you can end up in [VSAN](https://virtualhobbit.com/2016/05/02/my-self-inflicted-vsan-nightmare/) [nightmare](https://www.reddit.com/r/vmware/comments/26zbkb/my_vsan_nightmare/). But YMMV.**
-
-The official VSAN HCL file is available [here](http://partnerweb.vmware.com/service/vsan/all.json). This is a JSON formatted file which is the source of knowledge behind the VSAN Health Check Plugin. This is a good start to finding VSAN compatible hardware, which can be also found on the VMware's official HCL.
-
-| Form Factor | Type | Manufacturer | Model   | Capacities Available (GB)  | Recommended tier | On VMware HCL | Notes                                                                                                       |
-|-------------|------|--------------|---------|----------------------------|------------------|---------------|-------------------------------------------------------------------------------------------------------------|
-| 2.5"        | SSD  | Samsung      | EVO 850 | 120, 250, 500, 1000, 2000! | Capacity         | ?             | Great for capacity tier. For caching, using something with better [DWPD](/community/jargon-buster/#storage). |
-| mSATA       | SSD  | Intel        | 525     | 30,60,120,240              | TBC              | ?             |                                                                                                             |
-| M.2         | NVMe | Samsung      | SM951   | 128                        | Caching          | ?             | Very quick NVMe device!                                                                                     |
-| 2.5"        | SSD  | Samsung      | SM863   | 120,240,480,960,1920       | Cache/Capacity   | Yes           | Affordable drives which can be found on official HCL.                                                       |
-
-Tested and Proven VSAN Homelab SSDs
+The official source of compatible hardware is the [Broadcom Compatibility Guide](https://compatibilityguide.broadcom.com/). vSAN's health checks in vCenter will flag anything unsupported. In a lab, you can often acknowledge those warnings once you understand them.

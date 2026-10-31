@@ -1,29 +1,41 @@
 ---
 title: "Nested lab architecture"
-description: "A nested lab utilizes the 'nested virtualization' concept. Let me explain"
+description: "A practical pattern for a nested lab: keep a stable base layer that you don't experiment on, and put disposable labs on top."
 sidebar:
   label: "Nested lab architecture"
-  order: 8
-lastUpdated: 2020-07-31
+  order: 9
+lastUpdated: 2026-10-30
 wikiTitle: "Nested lab architecture"
 ---
 
-A nested lab utilizes the 'nested virtualization' concept. Let me explain
+This pattern comes from community member Joep Piscaer's nested lab. It was originally built on ESXi, but the idea works on any hypervisor that supports [nested virtualization](/hypervisors/vinception/). The key is to separate the parts you depend on from the parts you experiment with.
 
-1.  The first layer of a nested lab architecture is the physical layer. It's the server(s) that make up your home lab. It has a hypervisor installed. For proper nested virtualization, I strongly recommend ESXi. Even the free version can do nested virtualization, but having a fully licensed lab through [VMUG Advantage](https://openhomelab.org/index.php?title=VMware_Licensing) is recommended. The hardware and hypervisor are installed once, and serve as a stable base to work with. You don't horse around with these layers as they provide the infrastructure and resources for your lab, they're not stuff 'to play around with' (at least not after the initial joy of configuring these two after buying a new home lab).
-2.  This 'production'-like layer includes other stuff like a vCenter Appliance, a NAS, DHCP/DNS server and more. Again, these provide the infrastructure for your lab environment, but you don't play around with this stuff. I run a vCenter Appliance, a pfSense networking VM (for routing, firewalling, NAT, DHCP, DNS and more) and a Windows VM as a NAS.
+## The layers
 
-## Difference between a production workload and a lab workload
+| Layer | What's in it | How to treat it |
+| --- | --- | --- |
+| **Physical** | Hardware and the outer hypervisor | Install once and leave it alone |
+| **Lab services** | Router and firewall VM, DNS and DHCP, file shares, a management tool | Treat it as production, even at home |
+| **Lab workloads** | Nested hypervisors and their VMs | Break it, delete it, and rebuild it |
 
-I run ESXi on my physical box, and I have various VMs running to provide the lab infra. I don't touch these components. These are the production workloads that provide me with a working lab environment.  
-I also have various nested ESXi and VCSA VMs running. These are specific lab workloads to test out specific stuff, like a new vSphere beta version.  
-I could've installed the vSphere beta on the physical box, but that compromises other labs I might have running due to bugs, stability issues, etc.  
-See how I distinguish between 'production' and 'lab' workloads (even if they're the same product, like ESXi or vCenter)?  
+The same product can appear in different layers. A vCenter or Proxmox instance that manages your lab belongs in the services layer. Another copy that you're test-upgrading is a workload. What matters is what breaks if it goes down.
 
-## A Windows VM as a NAS
+## Keep your downloads next to the lab
 
-Yes, I run a Windows VM as a NAS (and it doubles as a Data Copy Management workstation). Why? Because it is brilliant in how I operate my lab. Imagine the following scenario:  
-*I have some dedicated lab time during a weekend, and I get cracking. I want to test out the new vSphere beta, so I go to the beta download site and download a bunch of ISOs and OVAs on my laptop over a relatively slow WiFi connection. I then copy these over to my NFS NAS so I can access them from within ESXi to build a nested lab.*  
-  
-See how this puts distance (in terms of physical closeness, but also in terms of connectivity: bandwidth and latency) between me and my lab? This is why I've built a Windows NAS VM (presenting the same folders on the NAS via SMB to my home network and via NFS to ESXi). This is how I work:  
-*I have some dedicated lab time during a weekend, and I get cracking. I want to test out the new vSphere beta, so I RDP into my Windows NAS VM, fire up a browser, go to the beta download site and download a bunch of ISOs and OVAs to the default download folder, which is shared via NFS to ESXi. I can immediately start building my nested lab.*
+Downloading ISOs and templates to your laptop over Wi-Fi and copying them to your NAS is slow and tedious. Instead, keep a small jump host VM inside the lab, reachable by remote desktop or SSH.
+
+Download from there directly to a folder that's shared to your hypervisors over NFS, and to your home network over SMB. Your installation media is then available as soon as the download finishes, without another copy. The original lab used a Windows VM for this, but a small Linux VM or a NAS share works just as well.
+
+## Network design
+
+Give the lab workloads their own bridge or VLAN behind the router VM. That gives you:
+
+- Freedom to run your own DHCP and DNS in the lab without affecting the rest of the house.
+- A single point at which to control what the lab can reach.
+- The option to run the same IP plan in multiple copies of a lab.
+
+See [IP addressing and VLANs](/networking/ip-addressing/).
+
+## Make the workloads disposable
+
+The workload layer pays off when you can rebuild it easily. Use templates, snapshots, and [automation](/management/automation/), so a broken lab costs you minutes rather than a weekend.

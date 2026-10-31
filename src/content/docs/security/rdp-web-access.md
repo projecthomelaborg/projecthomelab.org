@@ -8,17 +8,21 @@ lastUpdated: 2020-07-31
 wikiTitle: "RDP Web Access"
 ---
 
+:::caution[Check before you follow this guide]
+The screenshots come from an older Windows Server release, so menus may differ. Treat this as practice for learning Microsoft's Remote Desktop Services, not as a way to reach your lab from outside. For that, use a [VPN or mesh network](/security/remote-access/). Don't forward these ports to the internet.
+:::
+
 ## Introduction
 
-This is a brief article about configuring RD Web Access for your home lab
+This article covers configuring RD Web Access for your home lab.
 
 ## Pros and Cons
 
-If you don't have MSDN this can cost a few hundred for a Windows License then around £25 for a 5 User TSCAL
+Without a suitable subscription, you'll need Windows Server licenses and RDS client access licenses (CALs).
 
 ## Costs
 
-Free if you have access to an MSDN license or happy with the 90/180 trials to learn
+Free if you use the [180-day evaluation](/licensing/microsoft/#evaluations) to learn.
 
 ## What will you need
 
@@ -35,9 +39,9 @@ The use cases for this type of technology are for accessing your environment ove
 
 ## Solutions
 
-Firstly I shall start by saying I have configured this as bare bones to limit the amount of resources I use on my environment and also what works for me. If you are studying for your MCSA I would suggest you build this out and include a RD Web Access server, RD Virtualization Host and a RD Connection Broker. I used my Gateway as a session broker as most my traffic would be coming from here.
+Firstly I shall start by saying I have configured this as bare bones to limit the amount of resources I use on my environment and also what works for me. If you're studying Windows Server administration, I would suggest you build this out and include a RD Web Access server, RD Virtualization Host and a RD Connection Broker. I used my Gateway as a session broker as most my traffic would be coming from here.
 
-Firstly start by getting your two new VMs up and running and ready to join to your domain (sys prepped, WSUS etc)
+Firstly start by getting your two new VMs up and running and ready to join to your domain (sysprepped and patched)
 
 From here use any naming convention you want but I used
 
@@ -47,8 +51,6 @@ From here use any naming convention you want but I used
 You will also need another machine for licensing, I usually opt for this on my secondary DC
 
 **Please note I will put notes in for alternative config if only using two machines. I couldn't do this as I already had an environment on this domain**
-
-I am also to happy to explain I do the configuration this way as it allows you to install .NET 3.5 if you are still using the old fat clients for your hyper-visors
 
 ## Configuring the RD Gateway server
 
@@ -102,7 +104,7 @@ Follow all the above sections for your RDS host but on this screen select Remote
 
 <figure class="wiki-figure" style="max-width:400px"><img src="/images/8/8b/Rdsguide12.PNG" alt="Rdsguide12" loading="lazy" decoding="async"></figure>
 
-## Configuring the RD Session Host
+## Configuring the RD Licensing server
 
 Follow all the above sections for your License server but on this screen select Remote Desktop Licensing
 
@@ -240,7 +242,7 @@ Confirm your selections
 
 ## Testing your config
 
-To try out your system go to the following url <https://yourgw.yourdomain.com/RDWeb>. For now you will need to accept the certificate issue
+To try out your system go to the following url `https://yourgw.yourdomain.com/RDWeb`. For now you will need to accept the certificate issue
 
 <figure class="wiki-figure" style="max-width:400px"><img src="/images/8/81/Rdsguide51.PNG" alt="Rdsguide51" loading="lazy" decoding="async"></figure>
 
@@ -260,17 +262,11 @@ Fingers crossed your app should appear
 
 ## Securing your environment
 
-This section will be updated when the certificates section has been populated.
-
-## Exposing this to the world....
-
-I will update this shortly with a common UK router configuration as you will need to NAT some ports from the outside world.
+Replace the default certificate with a trusted one. See [Certificates](/security/certificates/).
 
 ## Known Issues and Solutions
 
-This is specifically to detail any issues with the technology being discussed, and how to resolve them. See the [Intel NUC](/hardware/intel-nuc/) page for an example.
-
 - You may want to deliver several services or pages on port 443
-  - Head over to my page about load balancing to learn more if you only have 1 public IP
+  - Use a reverse proxy
 - Requires several servers or understanding a DMZ
-  - Don't go for best practice but it may compromise security
+  - Skipping that best practice may compromise security

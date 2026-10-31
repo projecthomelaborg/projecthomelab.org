@@ -22,6 +22,7 @@ Node 20 or newer is required.
 | Path | What it is |
 | --- | --- |
 | `src/content/docs/<section>/` | Articles, one Markdown file each |
+| `src/content/docs/archive/` | Older build logs and retired products, kept for reference |
 | `src/content/docs/index.mdx` | Homepage |
 | `src/content/docs/about.md`, `contribute.mdx` | Hand-written project pages |
 | `src/components/` | Homepage rack, section listings, footer |
@@ -30,6 +31,7 @@ Node 20 or newer is required.
 | `scripts/build-htaccess.mjs` | Generates `public/.htaccess` (redirects, caching) before each build |
 | `scripts/import-mediawiki.mjs` | One-time converter from the old wiki |
 | `src/data/redirects.json` | Old wiki title → new URL, used for redirects |
+| `src/data/moved.json` | Moved article URL → new URL, used for redirects |
 
 ## Deploying
 
@@ -54,7 +56,7 @@ To deploy by hand instead, run `npm run build` and upload the contents of `dist/
 
 ## Re-running the wiki import
 
-Only needed if you change article placement in `scripts/site-map.mjs` before launch. It overwrites the section folders, so don't re-run it after people start editing articles on GitHub.
+Don't re-run the importer. Articles have been rewritten and moved since the import, and it overwrites the section folders, which would undo that work. These steps are kept for reference only.
 
 ```sh
 # needs pandoc: https://pandoc.org/installing.html

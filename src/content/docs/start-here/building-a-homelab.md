@@ -1,165 +1,79 @@
 ---
 title: "Building a Homelab"
-description: "This section of the site deals with the multitude of options you have available to you when you come to design, procure and build your homelab."
+description: "An overview of the options for compute, CPU, memory, storage, networking and software when you plan a homelab build."
 sidebar:
   label: "Building a Homelab"
-  order: 3
-lastUpdated: 2025-01-31
+  order: 4
+lastUpdated: 2026-10-30
 wikiTitle: "Building a Homelab"
 ---
 
-## Introduction
-
-This section of the site deals with the multitude of options you have available to you when you come to design, procure and build your homelab.
-
-Once you have [gathered your requirements](/start-here/requirements/), the next step wil most likely to be decide on [which category of homelab suits you best](/start-here/homelab-categories/), and subsequently you can follow the links below to find out information about your different infrastructure options.
+Once you've [gathered your requirements](/start-here/requirements/) and [picked a style of lab](/start-here/homelab-categories/), this page walks through each layer of the build.
 
 ## Compute
 
-Assuming you don't go for a [Cloud Lab](/cloud/cloud-homelabs/), then for your compute layer, you have two very simple options; build or buy.
+| Option | Best for | Watch out for |
+| --- | --- | --- |
+| [Mini PCs and 1-liter desktops](/hardware/mini-pcs/) | Most labs. Quiet, low power, easy to cluster | Limited expansion, few drive bays, often no remote management |
+| [Used enterprise servers](/hardware/used-enterprise-servers/) | Lots of cores and RAM, drive bays, out-of-band management | Noise, heat, power use, older CPUs |
+| [Custom builds](#custom-builds) | Choosing every part, adding drives and GPUs, keeping noise down | More time to research and build |
+| Tower servers | A middle ground with server features and less noise | Costs more than a rack server of the same age |
+| NAS with VM support | One box for storage and light services | Modest CPU and RAM on many models |
+| Single-board computers | DNS, monitoring, a cluster quorum vote | Limited I/O and RAM for the price |
+| Your existing PC or laptop | Trying things for free | Lab work competes with daily use |
 
-Much like when procuring a PC, if you choose to buy from a known (or unknown!) vendor, you may be able to get a decent price for the overall solution, though the level of flexibility after you have unwrapped it may be limited. The biggest advantage to building your own is that you can choose every single component which goes into your hosts, individually. This can of course be a pain if you want to make sure you have every component fully supported by your favourite hypervisor and version, but then again with great power comes great complexity! :)
+### Custom builds
 
-### Vendor Style
+Building your own lets you choose each part. Look for:
 
-Here you have three very simple options. Rack mount, Tower, or Small form factor. There is one other bonus option which is Laptop/Notebook, and if you need this, you will most definitely know it (for example SEs and Road Warriors love to carry a demo lab with them at all times!
+- **Case and cooling:** large, slow fans are quiet. Good airflow matters more than looks. Older community builds in the [archive](/archive/) still offer useful ideas on cases.
+- **Motherboard:** count PCIe slots, M.2 slots, SATA ports and DIMM slots. Boards with IPMI or another BMC cost more, but you can then manage the machine without a monitor. For a cheaper equivalent, see [IP KVMs](/management/headless-access/#ip-kvms).
+- **Network:** 2.5Gb onboard is now common. Intel and Realtek NICs work out of the box on Linux, but check support if you're running a hypervisor with a narrower driver list, such as ESXi.
+- **Power supply:** a good, correctly sized PSU is more efficient at the low loads a lab spends its time at.
 
-<table>
-<caption>Popular / Recommended Vendor Servers</caption>
-<thead>
-<tr>
-<th><p>Small Form Factor &amp; Barebones PCs</p></th>
-<th><p>Vendor Towers</p></th>
-<th><p>Vendor Rack Servers</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><ul>
-<li><a href="/hardware/intel-nuc/">Intel NUC</a>
-<ul>
-<li><a href="/hardware/intel-nuc6i7kyk/">Intel NUC6I7KYK</a></li>
-</ul></li>
-<li><a href="/hardware/">Gigabyte BRIX</a></li>
-<li>Shuttle XH61V</li>
-<li><a href="/hardware/shuttle-xpc-sz170-r8-v2/">Shuttle XPC SZ170 R8 V2</a></li>
-<li>ASRock C2750D4I</li>
-<li><a href="/hardware/supermicro-xeon-d-1500/">Supermicro Xeon D-1500</a></li>
-</ul></td>
-<td><ul>
-<li><a href="/hardware/hp-microserver/">HP MicroServer</a></li>
-<li><a href="/hardware/">HP ML110</a></li>
-<li>HP ML305</li>
-<li>HP ML310</li>
-<li><a href="/hardware/dell-poweredge/">Dell PowerEdge</a></li>
-</ul></td>
-<td><ul>
-<li><a href="/hardware/hpe-proliant-dl20/">HPE ProLiant DL20</a></li>
-<li>HPE DL380</li>
-<li><a href="/hardware/dell-poweredge/">Dell PowerEdge</a></li>
-<li>SuperMicro SuperServer</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+## CPU
 
-Popular / Recommended Vendor Servers
+CPU is rarely the first limit, so don't overspend. As a guide:
 
-### Whitebox Servers
+| Class | Examples | Suits |
+| --- | --- | --- |
+| **Low power** | Intel N100, N150, N305 | Containers, a few VMs, routers and home services |
+| **Desktop and mobile** | Intel Core, AMD Ryzen | Most labs, including multi-VM clusters |
+| **Workstation and server** | AMD EPYC, Threadripper, Intel Xeon | Lots of RAM, PCIe lanes and cores |
 
-AKA Roll your own!
+Things worth checking:
 
-<table>
-<caption>Popular / Recommended Cases</caption>
-<thead>
-<tr>
-<th><p>Whitebox Desktop/Tower Cases</p></th>
-<th><p>Small Form Factor Servers</p></th>
-<th><p>Whitebox Rack Cases</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><ul>
-<li><a href="/hardware/corsair-obsidian-900d/">Corsair Obsidian 900D</a></li>
-<li><a href="/hardware/corsair-carbide-400r/">Corsair Carbide 400R</a></li>
-<li>Fractal Design Define R3 / R4 / R5</li>
-<li><a href="/hardware/phanteks-enthoo-primo/">Phanteks Enthoo Primo</a> Black</li>
-</ul></td>
-<td><ul>
-<li><a href="/hardware/">SilverStone SG10</a></li>
-<li><a href="/hardware/antec-isk-600m/">Antec ISK-600m</a></li>
-</ul></td>
-<td><ul>
-<li>Supermicro SC505-203B</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+- **Hybrid Intel CPUs** mix performance and efficiency cores. Linux and KVM handle this well, but some hypervisors handle it poorly. ESXi in particular needs workarounds on many of these chips.
+- **Virtualization features:** you'll want VT-x or AMD-V, and VT-d or AMD-Vi (IOMMU) if you plan to pass through devices.
+- **Age:** old servers often use far more power for less performance than a modern mini PC. New hypervisor releases also drop old CPUs.
+- **Integrated graphics:** Intel Quick Sync and similar hardware make media transcoding far cheaper than doing it in software.
 
-Popular / Recommended Cases
+## Memory
 
-Lastly, once you know what case size you like, you need to decide what kind of motherboard will fit into it! Here are a few examples which have been tried and tested by the community:
+RAM is usually what limits how much you can run. DRAM prices rose sharply from late 2025 and were [still elevated in late 2026](https://www.digitalcitizen.life/ddr5-ram-prices-surge-in-2026-as-32gb-kits-reach-450-amid-global-memory-shortage/), so check current prices before you pick a platform. It can be cheaper to buy a used machine that already has RAM installed than to buy the RAM by itself.
 
-A full list of tested [Whitebox Homelab Motherboards](/hardware/whitebox-motherboards/) is available here:
+Containers use far less memory than VMs, so you may need less than you think. [ECC memory](/hardware/ecc-memory/) is good to have but isn't required.
 
-- [Whitebox Homelab Motherboards](/hardware/whitebox-motherboards/)
+## Storage
 
-## Processors
-
-When choosing a processor, the use case for your homelab will determine if the processor is a good fit. Make a list of functional requirements and choose the processor that handles these. Since memory will be the most likely bottleneck when running multiple virtual machines, don't get to carried away finding the most powerful processor.
-
-General rules of thumb Newer processors are build using a smaller etching method. This means the processor will use less power. Newer processors contain newer instruction sets. AES, memory table virtualization and h264 video processing are a clear example of instructions that speed up some of the workloads. Since using an instruction set requires the right drivers and software, your mileage may vary. If your workload benefits from an instruction set, you'll see both power savings and increased performance.
-
-For convenience sake, we'll split up processors into three groups:
-
-- Small - maximum of ~16GB RAM
-- Medium - Maximum of 32GB or 64GB RAM
-- Large - everything over 64GB RAM
-
-### Small processors
-
-Are usually designed for low-power devices such as NAS appliances, TVs and mini-notebooks. Newer versions of these kinds of processors (such as the Intel Braswell and AMD AM1 Kabini) are quite capable, but no speed devils. If you're going to build a machine that will be on 24/7 and perform relatively easy tasks (router, NAS, containers, home automation and/or home security) these are the best fit for the job. The power usage of the small processors group is pint-sized. The cheapest versions of these will be soldered to the motherboard and generally do not support more than two memory slots with a limited amount of memory.
-
-### Medium processors
-
-Contain your average desktop PC processors and derivatives. Great performance when you just want to build a fast homelab to test or use a moderate amount of workloads. Think Intel socket 1150 and AMD socket AM3+. A general maximum for these kind of processors is four to six cores and 32GB or 64GB RAM. They come with the most up-to-date instruction sets and can have high core clock speeds (up to 4GHz). Motherboards for this type have one socket to place your processor and two to four memory slots. While these are perfectly capable and, with some care during your build, reasonably power efficient, they have an upper limit to the amount of workloads that they can handle simultaneously.
-
-### Large processors
-
-These usually fall into the enthusiast, workstation or server grade processors. Think Intel socket 2011-3 and AMD Opteron. While these processors don't use a lot of power in idle mode, the amount of cores and addressable memory can handle much more workloads than the medium processors and can draw a significant amount of power out of a wall socket. Most of the processors in this category can be placed onto a multi-socket motherboard. This type of motherboard houses two or four processors. While all this raw processing power is awesome, don't forget your functional requirements. Burning lots of Watts might not be such a good idea when the money could buy you faster/bigger storage, more networking or more memory.
-
-## [Storage](/storage/storage-options/)
-
-The main [storage](/storage/storage-options/) category can be found [here](/storage/storage-options/). Articles include:
-
-- [Homelab Storage Introduction, Types and Options](/storage/storage-options/)
-- [Hyper-converged Infrastructure](/storage/hyper-converged-infrastructure/)
-- [Homelab Storage Software](/storage/storage-software/)
+Use NVMe flash for your VMs and containers, and hard drives only for bulk data. See [Storage options](/storage/storage-options/), [Storage software](/storage/storage-software/) and [Hyper-converged infrastructure](/storage/hyper-converged-infrastructure/).
 
 ## Networking
 
-- [10Gbps Homelab Networking](/networking/) - *Stub*
-- [Homelab Wi-fi](/networking/wifi/) - *Stub*
-- [Infiniband for 10Gbps to 100Gbps Networking](/networking/infiniband-10-100gbps/)
+A managed switch that supports VLANs is the most useful networking upgrade you can buy. After that, add speed only where it helps. See [IP addressing and VLANs](/networking/ip-addressing/), [10Gb and faster networking](/networking/10gbps-networking/) and [Home Wi-Fi](/networking/wifi/).
 
-## Power, Cooling and Noise
+## Power, cooling and noise
 
-- [Power](/housing/power/) - *Stub*
-- [Cooling](/housing/) - *Stub*
-- [Noise](/housing/noise/)
+See [Power](/housing/power/), [Noise](/housing/noise/) and [Racks](/housing/racks/).
 
-## [Hypervisors](/hypervisors/choosing-a-hypervisor/)
+## Hypervisor and containers
 
-- [Homelab Hypervisor Choices](/hypervisors/choosing-a-hypervisor/)
-- [Virtual Machine vInception / vTARDIS (including Type 1 vs Type 2 Hypervisors)](/hypervisors/vinception/)
+See [Choosing a hypervisor](/hypervisors/choosing-a-hypervisor/) and [Containers and Kubernetes](/hypervisors/containers-and-kubernetes/).
 
 ## Licensing
 
-- [Microsoft Licensing](/licensing/microsoft/)
-- [VMware Licensing](/licensing/vmware/)
-- Citrix Licensing
+Open source avoids the question for most labs. For vendor products, see [VMware licensing](/licensing/vmware/) and [Microsoft licensing](/licensing/microsoft/).
 
-## The Cloud
+## The cloud
 
-- [Cloud Homelabs](/cloud/cloud-homelabs/)
+You don't have to own it all. See [Cloud Homelabs](/cloud/cloud-homelabs/).

@@ -1,34 +1,26 @@
 ---
 title: "Ticketing Systems"
-description: "A help desk system is a way to organize different tasks into \"tickets\". If you're new to IT, you might not know why it's called a ticket. Back in the…"
+description: "Run a help desk in your homelab to practice IT workflows and document your fixes. Compare osTicket, Zammad, GLPI and others."
 sidebar:
   label: "Ticketing Systems"
-  order: 16
-lastUpdated: 2025-02-10
+  order: 6
+lastUpdated: 2026-10-30
 wikiTitle: "Ticketing Systems"
 ---
 
-## Introduction
+A help desk system organizes tasks into "tickets". The name goes back to when you'd write your support request on a slip of paper, which someone would place in a queue for the technicians.
 
-A help desk system is a way to organize different tasks into "tickets". If you're new to IT, you might not know why it's called a ticket. Back in the early days, if you had an issue and needed support, you'd write your request down on a slip of paper. Someone at the help desk would take this slip and put it into a queue for the techs. That slip of paper was a ticket and the terminology has stuck around into modern times.
-
-If you have not worked in IT or worked in a small organization, you might not have used a ticket system before. Having one in your home lab is a great way to get practice with ticketing systems. You can log issues with your homelab, fix them, and then document them. If you feel real adventurous, make your family submit tickets to fix their tech ;)
-
-## Costs
-
-Some ticketing systems are designed for enterprise use and can be very expensive. Others are free, free & open source, or low cost.
-
-## Use Cases
-
-Ticketing systems in a homelab environment can get you used to how tickets work and the importance of documentation. Historical tickets can be a trove of information.
+If you haven't worked in IT, or you've only worked in small organizations, running one at home is a great way to get practice. You can log problems with your lab, fix them, and document them. Old tickets become a useful record of what you've tried. If you're feeling adventurous, have your family submit tickets to get their tech fixed.
 
 ## Solutions
 
-| Vendor/Link                                                                          | Cost/License                  | Notes                                                                                                           |
-|--------------------------------------------------------------------------------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [Spiceworks](https://www.spiceworks.com)                                             | FREE / Proprietary            | Available in cloud only. Old version of on-prem is insecure and no longer developed.                            |
-| [osTicket](https://www.osticket.com)                                                 | FREE / GNU/GPL                | Self-hosted, PHP/MySQL, if you know or learn PHP it's easy to customize. Has AD/LDAP plugin for authentication. |
-| [ManageEngine ServiceDesk Plus](https://www.manageengine.com/products/service-desk/) | Free/Paid / Proprietary       | Standard version is free for up to 5 techs. Installs as a free trial of Enterprise                              |
-| [SupportPal](https://www.supportpal.com)                                             | \$249.95 annual / Proprietary | Self-hosted, PHP/MySQL. Source code is encoded with Ioncube. Extending this system requires use of the API.     |
+| Product | Cost and license | Notes |
+| --- | --- | --- |
+| [osTicket](https://osticket.com/) | Free, open source (GPL) | Self-hosted on PHP and MySQL. Simple, with an LDAP and Active Directory plugin |
+| [Zammad](https://zammad.org/) | Free, open source (AGPL) | A modern interface. Self-hosted using containers or packages |
+| [GLPI](https://www.glpi-project.org/) | Free, open source (GPL) | Combines help desk features with IT asset management |
+| [FreeScout](https://freescout.net/) | Free, open source (AGPL) | A lightweight shared inbox, with some paid modules |
+| [ManageEngine ServiceDesk Plus](https://www.manageengine.com/products/service-desk/) | Free and paid tiers, proprietary | Check the current free-tier limits |
+| [SupportPal](https://www.supportpal.com/) | Paid, proprietary | Self-hosted on PHP and MySQL |
 
-Help Desk Solutions
+Check whether what you plan to use matches what you'll see at work. If you'd like experience with ITSM workflows more generally, any of these will teach you the fundamentals of queues, priorities and knowledge bases.

@@ -1,76 +1,59 @@
 ---
 title: "Dell PowerEdge"
-description: "Starting with Generation 10 PowerEdge (PE) servers, Dell adopted a standardised naming convention. The names now generally consist of a letter followed by…"
+description: "How to read Dell PowerEdge model numbers, and which generations are worth buying for a homelab today."
 sidebar:
   label: "Dell PowerEdge"
-  order: 12
-lastUpdated: 2020-07-31
+  order: 3
+lastUpdated: 2026-10-30
 wikiTitle: "Dell PowerEdge"
 ---
 
-## Introduction
+Dell PowerEdge servers are common on the used market. Dell makes firmware updates easy to download, and there's a large community around them.
 
-Starting with Generation 10 PowerEdge (PE) servers, Dell adopted a standardised naming convention. The names now generally consist of a letter followed by three numbers (ex: PowerEdge R710).
+## Reading the model name
 
-The letter indicates the type (form factor) of the server:
+Since the 10th generation, names have used a letter and a set of digits.
+
+The letter shows the form factor:
 
 - **R** for rack-mount
 - **T** for tower
-- **M** for modular/blades
-- **C** for cloud infrastructure
+- **M** or **MX** for blade or modular
+- **C** for cloud-scale, high-density systems
 
-The first number indicates the number of sockets in the system: 1 to 3 for one socket, 4 to 7 for two sockets, 8 can be two or four sockets and nine for four sockets. This is followed by a number to indicate the generation of the server, and the last digit indicates whether this system uses Intel or AMD platform (0 represents Intel, 5 represents AMD).
+For three-digit models, using the **R740** as an example:
 
-*For example: The PowerEdge R710 is a Rack-mountable, 11th Generation server with 2 sockets and an Intel CPU.*
+- The **first digit** shows the class: higher numbers generally mean more sockets, more memory or larger chassis. R6xx is usually a 1U two-socket server and R7xx a 2U two-socket server.
+- The **second digit** shows the generation.
+- The **third digit** shows the CPU maker, with 0 for Intel and 5 for AMD on older models.
 
-Before the 10th generation of PowerEdge servers, the naming convention used 4 digits (ex: PowerEdge 2950) where the digits represent:
+| Second digit | Generation | Examples |
+| --- | --- | --- |
+| 1 | 11th | R610, R710 |
+| 2 | 12th | R620, R720 |
+| 3 | 13th | R630, R730 |
+| 4 | 14th | R640, R740 |
+| 5 | 15th | R650, R750 |
+| 6 | 16th | R660, R760 |
 
-- **First digit** – Height of the server in rack units
-- **Second digit** – Generation of server (up to 9th generation)
-- **Third digit** – Server type (5 for rack server, 0 for tower server)
-- **Fourth digit** – Indicated whether blade or independent box (5 for blade, 0 for normal independent box)
+AMD EPYC models use four digits, such as the **R7525**: 7 is the class, 5 is the generation, 2 is the socket count, and the final 5 means AMD.
 
-*For example: The PowerEdge 2950 is a 2U system from the 9th Generation of servers in Rack-mountable format in an independent box.*
+Before the 10th generation, a four-digit system was used. For example, the PowerEdge 2950 was a 2U, 9th-generation rack server.
 
-## Popular Models
+## Which ones to buy
 
-Currently 11th Generation servers are popular due price, availability and power.
+- **11th generation (R610, R710):** these were homelab favorites, but they're now too old and power-hungry. Avoid them unless they're nearly free and you only need them for occasional use.
+- **12th generation (R620, R720):** they're old, and new hypervisor releases are dropping support for their CPUs. It's best to pass on these as well.
+- **13th generation (R630, R730):** this is the budget choice, with DDR4 memory and a large used market. Check that current hypervisors still support the CPU you choose.
+- **14th generation (R640, R740):** a good balance of price and efficiency if your budget allows it.
 
-R710, R510, R610.
+The T-series towers, such as the T330, T430 and T630, are usually much quieter.
 
-## All Models
+## Remote management
 
-|                   |
-|-------------------|
-| **Generation 11** |
-| Model             |
-| T20               |
-| T110              |
-| T110 II           |
-| R210              |
-| R210 II           |
-| T310              |
-| R310              |
-| T410              |
-| R410              |
-| R415              |
-| R510              |
-| R515              |
-| T610 (Gen I, II)  |
-| R610 (Gen I, II)  |
-| M610 (Gen I, II)  |
-| T710 (Gen I, II)  |
-| R710 (Gen I, II)  |
-| R715              |
-| M710 (Gen I, II)  |
-| R810              |
-| R815              |
-| R910              |
-| M910              |
-| C1100             |
-| C2100             |
-| C6100             |
+PowerEdge servers include [iDRAC](/management/headless-access/#server-management-controllers) for remote management. A full graphical remote console generally needs an Enterprise license. Older versions may need outdated Java or browser support, so update the firmware and keep iDRAC on an isolated network.
 
-## External Links
+## Further reading
 
-[List of Dell Raid Controllers](http://www.dell.com/learn/us/en/04/campaigns/dell-raid-controllers)
+- [Used enterprise servers](/hardware/used-enterprise-servers/)
+- [Dell support](https://www.dell.com/support/) for manuals and firmware

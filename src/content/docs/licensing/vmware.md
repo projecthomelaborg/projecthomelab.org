@@ -1,55 +1,68 @@
 ---
 title: "VMware Licensing"
-description: "There are a number of methods for getting access to licenses ideal for homelabs from VMware, varying from free, to a couple of hundred dollars per year,…"
+description: "What you can legally run in a homelab since Broadcom's changes: free ESXi, VMUG Advantage, certification-based licenses and free desktop hypervisors."
 sidebar:
   label: "VMware Licensing"
-  order: 2
-lastUpdated: 2020-07-31
+  order: 1
+lastUpdated: 2026-10-30
 wikiTitle: "VMware Licensing"
 ---
 
-## Introduction
+VMware licensing for homelabs has changed a lot since Broadcom's acquisition, and it could change again. This reflects what we could confirm in October 2026. **Check the linked pages before you spend money.**
 
-There are a number of methods for getting access to licenses ideal for homelabs from VMware, varying from free, to a couple of hundred dollars per year, depending on how much cash or effort you want to put in to get them!
+## Options at a glance
 
-## Evaluation Licenses
+| Option | Cost | What you get | Main limit |
+| --- | --- | --- | --- |
+| [Workstation Pro and Fusion Pro](#desktop-hypervisors) | Free | Desktop hypervisors | No vendor support |
+| [Hands-on Labs](#hands-on-labs) | Free | Browser-based labs | Not your own environment |
+| [Free ESXi 8](#free-esxi) | Free | A single standalone ESXi 8 host | No vCenter, clustering or backup APIs, and no version 9 |
+| [Evaluation mode](#evaluation) | Free | Full features for about 60 days | Time limit |
+| [VCP certification](#certification) | Exam fee | vSphere Standard, 32 cores | Personal use, renewed yearly |
+| [VMUG Advantage and VCP-VCF](#vmug-advantage) | Membership and exam fee | VCF and more, for personal use | Membership and certification needed |
 
-As with most software vendors you can install evaluation editions of most VMware software, typically with a 60 day time limit.
+## Desktop hypervisors
 
-Downloads are available at [the VMware downloads site](https://my.vmware.com/web/vmware/downloads) or linked from individual product pages on [the VMware product pages](http://www.vmware.com/uk/products).
+Workstation Pro and Fusion Pro are [free for commercial, educational and personal use](https://www.computerworld.com/article/3604503/vmware-makes-workstation-and-fusion-free-for-everyone.html). You'll need a free Broadcom account to download them. They're a low-cost way to run a small nested lab.
 
-## Become a VMware vExpert!
+## Hands-on Labs
 
-As [Corey Romero](https://twitter.com/vcommunityguy) [says](http://blogs.vmware.com/vmtn/2015/11/vexpert-2016-applications-are-now-open.html), a “vExpert” is not a technical certification or even a general measure of VMware expertise.
+[VMware Hands-on Labs](https://labs.hol.vmware.com/) gives you free, guided environments in your browser. Try these first if you only need to see how a product works.
 
-*"They are the bloggers, book authors, VMUG leaders, speakers, tool builders, community leaders and general enthusiasts. They work as IT admins and architects for VMware customers, they act as trusted advisors and implementors for VMware partners or as independent consultants, and some work for VMware itself. All of them have the passion and enthusiasm for technology and applying technology to solve problems. They have contributed to the success of us all by sharing their knowledge and expertise over their days, nights, and weekends.*
+## Free ESXi
 
-*vExperts who participate in the program have access to private betas, **free licenses**, early access briefings, exclusive events, free access to VMworld conference materials online, exclusive vExpert parties at VMworld and other opportunities to interact with VMware product teams. They also get access to a private community and networking opportunities."*
+Broadcom withdrew free ESXi in 2024, then [brought it back in April 2025](https://www.theregister.com/2025/04/14/vmware_free_esxi_returns/) with ESXi 8.0 Update 3e, available through the Broadcom support portal. The release notes describe it as an unsupported, entry-level hypervisor.
 
-Worldwide there are now over 1000 vExperts and the number is growing all the time!
+Keep these limits in mind:
 
-As a member of the vExpert programme, you get access to licenses for almost every VMware product, and even a little vCloud Air credit, all for free! Now this isn't the reason for becoming a vExpert, but it is a really awesome bonus! What better way to start your journey to becoming a vExpert than by taking part in **[generating useful community content on this site](/contribute/)!**
+- It can't join vCenter, so there's no clustering, vMotion or HA.
+- It doesn't provide the APIs that most VM backup tools rely on.
+- We found no free edition for version 9, and reports differ on how freely it will get updates. Don't assume this will last.
 
-## VMware EVALExperience
+If you only want one free host, [Proxmox VE](/hypervisors/proxmox-ve/) or [XCP-ng](/hypervisors/xcp-ng/) gives you much more for the same price.
 
-Many years ago, VMware used to run a programme called the VMTN subscription, where you paid a small amount of money every year for a broad selection of licenses to be used in non-prod or home environments. It was ideal for homelabs! Unfortunately in around 2007 VMware pulled the programme, so between then and now the only ways to get legal free licenses were either through evaluations or perhaps becoming a member of the [vExpert community](https://communities.vmware.com/vexpert.jspa).
+## Evaluation
 
-Cue a [campaign](https://communities.vmware.com/thread/335123?start=0&tstart=0) started by [Mike Laverick](https://twitter.com/Mike_Laverick) and supported by many community members, and finally in January 2015 VMware finally came to its senses and reintroduced the package, now renamed to "EVALExperience" and available for \$200 per year as part of a **[VMware VMUG Advantage subscription](https://www.vmug.com/p/cm/ld/fid=11)!**
+A newly installed ESXi host and vCenter run with all features for about 60 days. That's fine for a short study sprint, but expect to rebuild the lab when it ends.
 
-The EVALExperience pack includes:
+## Certification
 
-- VMware vCenter Server Standard for vSphere 6
-- VMware vSphere® with Operations Management™ Enterprise Plus
-- VMware vCloud Suite® Standard
-- VMware vRealize Operations™
-- VMware vRealize Log Insight™
-- VMware vRealize Operations for Horizon®
-- VMware Horizon® Advanced Edition
-- VMware Virtual SAN™
+Broadcom [offers free personal-use licenses to certified professionals](https://blogs.vmware.com/cloud-foundation/2025/04/14/free-home-lab-licenses-for-vmware-certified-professionals/). Passing the VCP-VVF Administrator exam, or a qualifying VCP-VCF exam, gives you **vSphere Standard with 32 cores for one year**, requested through Broadcom's certification portal. No VMUG membership is needed for this. Exam costs are extra.
 
-For the number of licenses you get and the fact that you can run these 24/7/365 instead of having to rebuild every 60 days, this is a great option. The VMUG subscription also includes a load of other benefits such as discounts on exams and training, so well worth seeing if your employer will even consider allowing you to expense it!
+## VMUG Advantage
 
-## External Links
+The EVALExperience licenses that made VMUG Advantage so popular [ended for new requests](https://blogs.vmware.com/code/2025/03/19/vmug-advantage-home-lab-license-guide/). Membership alone no longer gets you licenses. You need [VMUG Advantage](https://vmug.com/advantage) ($210 per year when we checked) **and** a passed VCP-VCF exam. That combination gets you personal-use VCF licenses for up to three years, and members can also access products such as vDefend and Avi. Members also get an exam discount.
 
-- [VMware Downloads Site](https://my.vmware.com/web/vmware/downloads)
-- [VMware VMUG Advantage subscription](https://www.vmug.com/p/cm/ld/fid=11)
+Use the same email address on your Broadcom and VMUG accounts so the two can be linked.
+
+## vExpert
+
+vExperts used to get licenses as a program benefit. [That ended in 2025](https://www.vladan.fr/no-more-free-licenses-of-vmware-vsphere-for-vexperts-whats-your-options), and they now follow the same VMUG and certification route, though with a reported discount on membership.
+
+## A note on license keys
+
+You'll find sites that offer VMware keys for free. Don't use them. Apart from the [legal issue](/about/#disclaimer), these sites are a common way to deliver malware. Project Homelab only covers legitimate licensing.
+
+## Is it worth it?
+
+If VMware skills are part of your job or job search, the certification route costs a fairly small amount and gets you a certification too. If it's just for your home, open source alternatives are free and have no renewal risk.

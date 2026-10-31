@@ -1,43 +1,61 @@
 ---
 title: "Microsoft Hyper-V"
-description: "The Hypervisor itself is available as a standalone free product or baked into Windows Server (or Windows 10). See Microsoft Licensing for suggestions on…"
+description: "Hyper-V is Microsoft's hypervisor, included in Windows Server and in Windows Pro and Enterprise. Learn the options and costs for a homelab."
 sidebar:
   label: "Microsoft Hyper-V"
-  order: 3
-lastUpdated: 2020-07-31
+  order: 5
+lastUpdated: 2026-10-30
 wikiTitle: "Microsoft Hyper-V"
 ---
 
-## Introduction
+Hyper-V is Microsoft's Type 1 hypervisor. It's a good choice if your job is in a Microsoft environment or if you want to learn Active Directory, failover clustering and Windows Server alongside virtualization.
 
-Hyper-V is the Microsoft hypervisor.
+## Ways to run it
 
-## Pros and Cons
+| Option | Cost | Notes |
+| --- | --- | --- |
+| **Windows 11 Pro or Enterprise** | Included | Turn on the Hyper-V feature. Good for a desktop lab. Not available on Home |
+| **Windows Server 2025 evaluation** | Free for 180 days | Full features. Good for study labs. See [Microsoft licensing](/licensing/microsoft/) |
+| **Windows Server, licensed** | Paid | Standard covers 2 Windows Server VMs per fully licensed host. Datacenter allows unlimited, and adds Storage Spaces Direct |
+| **Hyper-V Server 2019** | Free | The last free standalone release. [Microsoft ended the product](https://www.virtualizationhowto.com/2025/01/hyper-v-server-2025-nope-but-sort-of/) and there's no newer version. Avoid it for new labs, since its support ends in January 2029 |
 
-### Pros
+## Pros and cons
 
-- An Enterprise level Hypervisor
-- Available in a free tier or with an existing Windows license.
-- Basic Management tools included
-- Built into Windows client operating systems
+**Pros**
 
-### Cons
+- It's a good match for Microsoft-focused careers and certifications.
+- It has broad hardware support, using standard Windows drivers.
+- It supports live migration, failover clustering and nested virtualization.
+- Windows Server 2025 can build failover clusters [without an Active Directory domain](https://learn.microsoft.com/en-us/windows-server/failover-clustering/create-workgroup-cluster), which simplifies small labs.
 
-- No nested virtualization prior to Windows Server 2016
-- Host runs Windows, bringing more overhead than ESXi (improved with NanoServer)
+**Cons**
 
-## Costs
+- There's no longer a free server product for permanent use.
+- The Windows host adds more overhead and more patching and reboots than a lean hypervisor.
+- Management tools are spread across Hyper-V Manager, Failover Cluster Manager, PowerShell and Windows Admin Center.
+- Linux guests work well, but community homelab guidance is thinner than for Proxmox.
 
-The Hypervisor itself is available as a standalone free product or baked into Windows Server (or [Windows 10](https://msdn.microsoft.com/en-us/virtualization/hyperv_on_windows/windows_welcome)). See [Microsoft Licensing](Microsoft_Licensing) for suggestions on licensing Windows in a HomeLab environment.
+## Getting started
 
-## Use Cases
+On a Windows Server host, or on a Windows client using the elevated PowerShell prompt, enable the role:
 
-Hyper-V is suitable where a Type 1 Hypervisor is required for deploying direct to hardware. The "Hyper-V role" can also be used on an existing Windows (10 or Server 2008/2012) laptop or desktop which is already handy when dedicated hardware is not available. This role-based deployment provides a Type 1 Hypervisor with many of the benefits of a Type 2 Hypervisor.
+```powershell
+# Windows Server
+Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
 
-## External Links
+# Windows 11 Pro or Enterprise
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+```
 
-| Title                                                                  | Description                        |
-|------------------------------------------------------------------------|------------------------------------|
-| [<http://www.microsoft.com/hyper-v>](http://www.microsoft.com/hyper-v) | The Microsoft Hyper-V Product Page |
+Server Core uses fewer resources and needs fewer patches than the Desktop Experience. Manage it remotely with [Windows Admin Center](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/overview) or PowerShell.
 
-External Links
+To run a hypervisor inside a VM, [enable nested virtualization](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/enable-nested-virtualization) while the VM is off:
+
+```powershell
+Set-VMProcessor -VMName <name> -ExposeVirtualizationExtensions $true
+```
+
+## Related
+
+- [Microsoft licensing](/licensing/microsoft/)
+- [Hyper-V documentation](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/overview)

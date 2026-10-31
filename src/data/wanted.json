@@ -1,51 +1,9 @@
 [
   {
-    "title": "Homelab Decision Trees",
-    "section": "Start here",
-    "dir": "start-here",
-    "wikiTitle": "Homelab Decision Trees"
-  },
-  {
-    "title": "Gigabyte BRIX",
-    "section": "Hardware",
-    "dir": "hardware",
-    "wikiTitle": "Gigabyte BRIX"
-  },
-  {
-    "title": "HP ML110",
-    "section": "Hardware",
-    "dir": "hardware",
-    "wikiTitle": "HP ML110"
-  },
-  {
-    "title": "HP M110",
-    "section": "Hardware",
-    "dir": "hardware",
-    "wikiTitle": "HP M110"
-  },
-  {
-    "title": "HPE ProLiant DL360 Gen9",
-    "section": "Hardware",
-    "dir": "hardware",
-    "wikiTitle": "HPE ProLiant DL360 Gen9"
-  },
-  {
-    "title": "SilverStone SG10",
-    "section": "Hardware",
-    "dir": "hardware",
-    "wikiTitle": "SilverStone SG10"
-  },
-  {
     "title": "Lack Rack",
     "section": "Housing your lab",
     "dir": "housing",
     "wikiTitle": "Lack Rack"
-  },
-  {
-    "title": "UPS",
-    "section": "Housing your lab",
-    "dir": "housing",
-    "wikiTitle": "UPS"
   },
   {
     "title": "Cooling",
@@ -66,22 +24,25 @@
     "wikiTitle": "Nutanix CE"
   },
   {
-    "title": "Intel Cache Acceleration Software",
-    "section": "Storage",
-    "dir": "storage",
-    "wikiTitle": "Intel Cache Acceleration Software"
+    "title": "Bhyve",
+    "section": "Hypervisors and containers",
+    "dir": "hypervisors",
+    "wikiTitle": "Bhyve"
   },
   {
-    "title": "10Gbps Homelab Networking",
-    "section": "Networking",
-    "dir": "networking",
-    "wikiTitle": "10Gbps Homelab Networking"
+    "title": "Incus",
+    "section": "Hypervisors and containers",
+    "dir": "hypervisors"
   },
   {
-    "title": "Infiniband",
+    "title": "GPU passthrough and local AI",
+    "section": "Hypervisors and containers",
+    "dir": "hypervisors"
+  },
+  {
+    "title": "IPv6 in the homelab",
     "section": "Networking",
-    "dir": "networking",
-    "wikiTitle": "Infiniband"
+    "dir": "networking"
   },
   {
     "title": "Cisco Meraki",
@@ -90,94 +51,9 @@
     "wikiTitle": "Cisco Meraki"
   },
   {
-    "title": "Open-Mesh",
-    "section": "Networking",
-    "dir": "networking",
-    "wikiTitle": "Open-Mesh"
-  },
-  {
-    "title": "KEMP",
-    "section": "Networking",
-    "dir": "networking",
-    "wikiTitle": "KEMP"
-  },
-  {
-    "title": "VMware NSX",
-    "section": "Networking",
-    "dir": "networking",
-    "wikiTitle": "VMware NSX"
-  },
-  {
-    "title": "Proxmox VE",
-    "section": "Hypervisors",
-    "dir": "hypervisors",
-    "wikiTitle": "Proxmox VE"
-  },
-  {
-    "title": "Bhyve",
-    "section": "Hypervisors",
-    "dir": "hypervisors",
-    "wikiTitle": "Bhyve"
-  },
-  {
-    "title": "Managing your Homelab from a Mobile Device",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "Managing your Homelab from a Mobile Device"
-  },
-  {
-    "title": "Chef",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "Chef"
-  },
-  {
-    "title": "Puppet",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "Puppet"
-  },
-  {
-    "title": "Backups",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "Backups"
-  },
-  {
-    "title": "Veeam",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "Veeam"
-  },
-  {
-    "title": "WSUS",
-    "section": "Management",
-    "dir": "management",
-    "wikiTitle": "WSUS"
-  },
-  {
-    "title": "Firewalls",
+    "title": "Identity and single sign-on",
     "section": "Security",
-    "dir": "security",
-    "wikiTitle": "Firewalls"
-  },
-  {
-    "title": "Sophos",
-    "section": "Security",
-    "dir": "security",
-    "wikiTitle": "Sophos"
-  },
-  {
-    "title": "Amazon Web Services",
-    "section": "Cloud labs",
-    "dir": "cloud",
-    "wikiTitle": "Amazon Web Services"
-  },
-  {
-    "title": "Microsoft Azure",
-    "section": "Cloud labs",
-    "dir": "cloud",
-    "wikiTitle": "Microsoft Azure"
+    "dir": "security"
   },
   {
     "title": "Homelab Horror Stories",

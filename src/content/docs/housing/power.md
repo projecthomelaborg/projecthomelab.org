@@ -1,63 +1,83 @@
 ---
 title: "Power"
-description: "See this forum post for good overview of considerations when sizing a power supply (from a NAS perspective, but generally applicable for other use-cases)."
+description: "Work out what your lab costs to run, measure its real power use, and choose a UPS, power distribution and a power supply."
 sidebar:
   label: "Power"
   order: 3
-lastUpdated: 2020-07-31
+lastUpdated: 2026-10-30
 wikiTitle: "Power"
-stub: true
 ---
 
-:::note[This article is unfinished]
-It was started on the old wiki but never completed. If you know this topic, [help finish it](/contribute/).
-:::
+Power is often the largest long-term cost of a homelab, and the one people forget when they spot a cheap server.
 
-## Introduction
+## What a watt costs
+
+For something that runs all the time:
+
+**Annual cost = watts × 8.76 × your price per kWh**
+
+One watt running all year uses 8.76 kWh. These figures use $0.18 per kWh, so scale them to your own rate.
+
+| Average draw | Example | kWh per year | Cost per year |
+| --- | --- | --- | --- |
+| 10W | N100 mini PC | 88 | $16 |
+| 30W | Three mini PCs | 263 | $47 |
+| 60W | Small NAS and switch | 526 | $95 |
+| 150W | Used two-socket server | 1,314 | $237 |
+| 400W | A small rack | 3,504 | $631 |
+
+Heat adds to this. Everything you consume ends up as heat in the room, so you may also pay for cooling in summer, though you'll offset some heating in winter.
+
+## Measure it
+
+Don't trust nameplate ratings. They show the maximum a power supply can deliver, not what the machine uses.
+
+- A plug-in power meter costs little and shows the real draw.
+- Smart plugs with energy monitoring can feed the data into Home Assistant or [your monitoring](/management/monitoring/).
+- Servers report their power use through iDRAC and iLO.
+- On Linux, [PowerTOP](https://github.com/fenrus75/powertop) can help you find savings.
+
+## Reducing your bill
+
+- Turn off what you aren't using. Wake-on-LAN or a [BMC](/management/headless-access/) can start machines on demand.
+- Consolidate. One efficient machine often replaces several old ones.
+- Enable C-states and ASPM in the firmware. This makes a big difference to idle power on many systems.
+- Spin down hard drives you rarely use, although that has trade-offs for drive life and wake-up time.
+- SFP+ with DAC cables uses less power than 10GBASE-T.
 
 ## PSU
 
-See this [forum post](https://forums.freenas.org/index.php?threads/proper-power-supply-sizing-guidance.38811/) for good overview of considerations when sizing a power supply (from a [NAS](NAS) perspective, but generally applicable for other use-cases).
+A good power supply is more efficient and quieter. Look for 80 Plus Gold or better, and don't oversize it, because many PSUs are less efficient at the very low loads a lab spends its time at. Used servers often offer several PSU sizes, so buy the smallest that will do the job.
+
+When sizing a system with many hard drives, allow for their startup current, which is much higher than their running power.
 
 ## UPS
 
-A UPS is a really useful device to have in the home, whether you are using it for a homelab, or simply to protect your home NAS / PC. As well as providing a battery backup for any brownouts, blackouts, or simply when a fuse / RCD on your consumer unit trips, they are also very effective at insulating your expensive <s>toys</s> electronic equipment from electrical spikes, surges and noise.
+A UPS protects against outages, brownouts, and many surges, and gives your systems time to shut down cleanly. That's especially important for data you care about.
 
-One thing to be aware of is that some UPS models often make an irritating high pitched noise, which can be distracting and lower your WAF if it is placed in a high family area such as the living room or bedroom.
+- **Sizing:** add up your real power use, not nameplate ratings, and allow some headroom. Check both watts and VA.
+- **Type:** line-interactive units suit most labs. Double-conversion units are cleaner but use more power and often have louder fans.
+- **Waveform:** many modern power supplies with active PFC prefer pure sine wave output, as opposed to the cheaper "simulated" sine wave.
+- **Automatic shutdown:** connect the UPS by USB or network, and use [NUT](https://networkupstools.org/) or apcupsd to shut down your machines when the battery gets low. Test it. Most NAS systems and Proxmox can use NUT too.
+- **Batteries:** lead-acid batteries usually last a few years, so budget for replacement and test yours regularly. LiFePO4 units cost more but last longer.
+- **Noise:** some UPS units whine or have fans that run constantly. Check before putting one in a bedroom or living room.
 
-For more information on specific models tested by the community, see the [UPS](/housing/) page.
+Protect your network gear as well, since a server's no use if you can't reach it.
 
 ## PDUs
 
-## Remote PDUs
+A power distribution unit (PDU) gets power to your rack. Basic PDUs are little more than a tidy power strip for your rack.
 
-<figure class="wiki-figure" style="max-width:300px"><img src="/images/8/82/Masterswitch-interface.gif" alt="Masterswitch interface" loading="lazy" decoding="async"></figure>
+Switched PDUs let you turn individual outlets on and off remotely, so you can:
 
-Remote PDUs are very useful for several reasons. You can use them to remotely:
+- Reboot a hung host, even one without a BMC.
+- Turn off lab nodes when they aren't being used, and bring them back when you need them.
 
-- reboot non-responsive hosts, even without iLO or similar
-- power off one or more nodes in your lab when not in use, and remotely turn it back on again as required
+Used APC units are common on eBay, but they can be noisy and have old, insecure management interfaces. Keep them on your management network. For a few devices, smart plugs that run locally, such as ones with [Tasmota](https://tasmota.github.io/docs/) firmware, are a cheaper option.
 
-This is useful functionality, even if you do have reasonably easy physical access to your lab as (for example) you can use it to remotely boot your lab whilst in the office or away from your homelab location
+## Circuits and safety
 
-Bear in mind though, that most remote PDUs are typically rack mountable, so you either need to be able to stack them somewhere, or have at least a small rack.
-
-Examples of tested homelab remote PDUs are as follows:
-
-- [APC AP 9212 Masterswitch PDU](ftp://ftp.apc.com/apc/public/hardware/mswitch/firmware/ms/v220/usrguide.pdf)
-  - Costs around £100-£150 (\$150-\$225) used on ebay and can power up to 8 devices
-  - Controlled through a very simple web interface, though secured by http only, so be careful with password choices
-
-## Cables
-
-## Connectors
-
-## Circuits
-
-## Power Bills
-
-<figure class="wiki-figure" style="max-width:200px"><img src="/images/0/09/Greatpower.png" alt="Greatpower" loading="lazy" decoding="async"></figure>
-
-**Still under construction**
-
-In the meantime, here is a meme to test image uploads!
+- Know the limit of your circuit, and what else is on it. In the US, a standard 15A, 120V circuit should have no more than about 1,440W of continuous load. In the UK, a 13A plug supplies up to about 3kW, but check the limits of your ring circuit and extension leads.
+- Don't daisy-chain power strips.
+- If you're running high loads continuously, ask an electrician to check your wiring. Heat at a loose connection or a cheap extension lead is a real fire risk.
+- Lithium batteries, in particular cheap ones, need to be treated with care.

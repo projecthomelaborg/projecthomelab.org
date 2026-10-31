@@ -11,7 +11,7 @@ export default defineConfig({
     starlight({
       title: 'Project Homelab',
       description:
-        'A community guide to planning, building and running a homelab: hardware, hypervisors, storage, networking and more.',
+        'A community guide to planning, building and running a homelab: hardware, hypervisors, containers, storage, networking and more.',
       logo: { src: './src/assets/mark.svg', alt: '' },
       favicon: '/favicon.svg',
       social: [

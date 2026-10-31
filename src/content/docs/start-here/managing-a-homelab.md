@@ -1,70 +1,38 @@
 ---
 title: "Managing a Homelab"
-description: "This section of the site deals with the multitude of options you have available to you when you have completed building your homelab, and now you have to…"
+description: "Once the lab is built, you have to run it. An overview of backups, monitoring, patching, automation and documentation, mostly with free tools."
 sidebar:
   label: "Managing a Homelab"
-  order: 4
-lastUpdated: 2025-02-19
+  order: 5
+lastUpdated: 2026-10-30
 wikiTitle: "Managing a Homelab"
 ---
 
-## Introduction
+Once the lab is built, you have to run it. That's also good practice, because these are the same skills employers look for. Nearly everything here has a free or open source option.
 
-<figure class="wiki-figure" style="max-width:200px"><img src="/images/b/b1/ManagingHomelabMeme.png" alt="ManagingHomelabMeme" loading="lazy" decoding="async"></figure>
+If you only do three things, do these, in this order:
 
-This section of the site deals with the multitude of options you have available to you when you have completed building your homelab, and now you have to manage the thing.
+1. Set up [backups](/management/backups/) and test a restore.
+2. [Automate your updates](/management/patching/).
+3. Write down what you built.
 
-This includes all of the usual boring things like backups, monitoring, etc!
+## Areas to cover
 
-Ideally we all want to keep costs down wherever possible, so the majority of tools and methods listed here will either be universally free, free based on community status (e.g. vExpert/MVP, etc), or have a reasonably low cost associated with them.
+| Area | What it's for | Start with |
+| --- | --- | --- |
+| [Backups](/management/backups/) | Getting your data back | Proxmox Backup Server, restic or Veeam Community Edition |
+| [Patching](/management/patching/) | Staying secure without spending your weekends on it | Unattended upgrades on anything you can safely rebuild |
+| [Monitoring](/management/monitoring/) | Knowing it's broken before someone tells you | Uptime Kuma, then Prometheus and Grafana |
+| [Automation](/management/automation/) | Rebuilding quickly and repeatably | Ansible, then Terraform or OpenTofu |
+| [Headless access](/management/headless-access/) | Fixing machines without a monitor | A BMC, or an IP KVM such as PiKVM |
+| [Ticketing](/management/ticketing-systems/) | Practicing help desk workflows | osTicket or Zammad |
 
-The following is an index of completed articles under the banner of Managing a Homelab:
+## Write it down
 
-## Basic Management of your Homelab
+Your future self won't remember why VLAN 30 exists. Keep a simple record of your IP plan, what runs where, and how to rebuild it. A Git repository of Markdown files works, and so does a wiki such as BookStack or Wiki.js. NetBox suits you if you'd like to practice proper IP address and inventory management.
 
-- [Managing your VMware vSphere Homelab without vCenter](/management/vsphere-without-vcenter/)
-- Managing your VMware vSphere Homelab from Mac OSX - *Stub*
-- [Managing your Homelab from a Mobile Device](/management/) - *Stub*
-- [Managing your Homelab via Xbox](/management/xbox/)
-- [Running Your vSphere Management Cluster on Hyper-V](/management/vsphere-management-cluster-on-hyper-v/)
-- [Headless Access](/management/headless-access/) to your homelab
+Just don't host the only copy of your recovery notes on the lab you'd need them to recover.
 
-## Backups
+## Keep it simple
 
-- [Nakivo](/management/nakivo/)
-- [Veeam](/management/)
-
-%About_Yourself%
-
-## Management Automation
-
-- [Jenkins in the Homelab](/management/jenkins/)
-- [Ansible](https://www.ansible.com/)
-
-## Build Automation
-
-- [Introduction to AutoLab](/management/autolab/)
-
-## Patching
-
-- Article
-- [Spacewalk](/management/spacewalk/)
-
-## Monitoring
-
-- [Nagios XL](https://www.nagios.org/)
-- [Icinga2](https://www.icinga.com/)
-- [Obversium](https://www.observium.org/)
-- [Zabbix](https://www.zabbix.com/)
-- [LibreNMS](https://www.librenms.org/)
-
-## Logging
-
-- [Nagios Log Server](https://www.nagios.org/)
-- [Graylog](https://www.graylog.org/)
-- [VMware vRealize Log Insight](http://www.vmware.com/products/vrealize-log-insight.html) (low-cost for VMUG members)
-
-## Load Balancing
-
-- [KEMP](/networking/) Load balancer - *stub*
-- [HAproxy](http://www.haproxy.org/)
+Every service you add is something else to patch, back up and fix. See [Keep it simple](/start-here/keep-it-simple/).
