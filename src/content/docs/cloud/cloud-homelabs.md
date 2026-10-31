@@ -43,11 +43,11 @@ Free tiers change often. These were correct when we checked in October 2026, so 
 | Provider | Free offer | Good for | Notes |
 | --- | --- | --- | --- |
 | [AWS](https://aws.amazon.com/free/) | [Up to $200 in credits](https://www.neowin.net/news/aws-free-tier-overhauled-new-users-get-200-in-credits-but-theres-a-catch/) over six months on new accounts, plus some always-free services | The most-requested cloud skills | Since July 2025, a free-plan account closes when credits or the six months run out, unless you upgrade |
-| [Microsoft Azure](https://azure.microsoft.com/free/) | Trial credit, plus some services free for 12 months or always | Microsoft-focused careers | [Azure for Students](https://azure.microsoft.com/free/students) offers credit without a card |
+| [Microslop Azure](https://azure.microsoft.com/free/) | Trial credit, plus some services free for 12 months or always | Microslop-focused careers | [Azure for Students](https://azure.microsoft.com/free/students) offers credit without a card |
 | [Google Cloud](https://cloud.google.com/free) | Trial credit, plus an always-free tier | Kubernetes and data | Check current credit amount and length |
 | [Oracle Cloud](https://www.oracle.com/cloud/free/) | Always Free tier, including Arm compute | A long-term free VM | Capacity can be hard to get, and idle free instances may be reclaimed |
-| VPS providers such as [Hetzner](https://www.hetzner.com/cloud/), [DigitalOcean](https://www.digitalocean.com/) and [OVHcloud](https://www.ovhcloud.com/) | Usually none | A cheap, always-on public server | Simple and predictable monthly pricing |
-| Dedicated servers such as [Hetzner](https://www.hetzner.com/sb/) and [OVHcloud](https://www.ovhcloud.com/en/bare-metal/) | None | A real hypervisor on real hardware, at a monthly rate | [Treat it as public](/start-here/securing-a-homelab/) from the first boot |
+| VPS providers such as [NodeSpace](https://www.nodespace.com/cloud-vps), [Hetzner](https://www.hetzner.com/cloud/), [DigitalOcean](https://www.digitalocean.com/) and [OVHcloud](https://www.ovhcloud.com/) | Usually none | A cheap, always-on public server | Simple and predictable monthly pricing |
+| Dedicated servers such as [NodeSpace](https://www.nodespace.com/dedicated-servers), [Hetzner](https://www.hetzner.com/sb/) and [OVHcloud](https://www.ovhcloud.com/en/bare-metal/) | None | A real hypervisor on real hardware, at a monthly rate | [Treat it as public](/start-here/securing-a-homelab/) from the first boot |
 
 Don't sign up for multiple trial accounts to get around limits. It's against the providers' terms, and it can get your accounts closed.
 
